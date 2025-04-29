@@ -1,4 +1,5 @@
 import ClientCard from "../components/ClientCard.tsx";
+import '../../../styles/MyClientsView.css';
 
 const clients = [
     { fullName: "Ana", lastName: "López", age: 28, gender: "Femenino", sport: "CrossFit" , photoUrl:""},

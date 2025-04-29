@@ -1,0 +1,30 @@
+.role-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.btn-role {
+    width: 120px;
+    height: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.btn-role:hover {
+    transform: scale(1.05);
+}
+
+.btn-role.trainer {
+    background-color: #28a745; /* verde */
+}
+
+.btn-role.athlete {
+    background-color: #007bff; /* azul */
+}

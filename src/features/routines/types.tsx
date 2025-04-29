@@ -16,3 +16,4 @@ export interface Routine {
     createdAt: Date;
     exercises: Exercise[][];
 }
+

@@ -1,0 +1,88 @@
+.footerContainer {
+    background-color: #1F2128;
+    color: white;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.topSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.bar {
+    width: 6px;
+    height: 30px;
+    border-radius: 3px;
+}
+
+.bar-pink {
+    background-color: #FF007F;
+}
+
+.bar-orange {
+    background-color: #FFA500;
+}
+
+.bar-blue {
+    background-color: #00BFFF;
+}
+
+.navMenu {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    padding-left: 10px;
+    overflow: hidden;
+}
+
+.searchInput {
+    border: none;
+    outline: none;
+    padding: 5px 10px;
+    font-size: 14px;
+    width: 120px;
+}
+
+.searchButton {
+    background: none;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.socialIcons {
+    display: flex;
+    gap: 15px;
+    font-size: 18px;
+}
+
+.separator {
+    border-color: #3a3a3a;
+    margin: 10px 0;
+}
+
+.bottomSection {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 12px;
+}

@@ -9,7 +9,12 @@ import {initDefaultExercises} from "../../../scripts/initDefaultExercises.tsx";
 import {exportRoutineToJson} from "../../../scripts/UsefullFunctions.tsx";
 
 function CreateRoutine() {
-    const [routineByType, setRoutineByType] = useState<Record<string, Exercise[]>>({});
+    type RoutineSection = {
+        type: string;
+        exercises: Exercise[];
+    };
+    const [sections, setSections] = useState<RoutineSection[]>([]);
+
     const [currentType, setCurrentType] = useState<string>('Empuje');
     const ref = collection(firestore, "routines");
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -36,41 +41,59 @@ function CreateRoutine() {
     const [clientName, setClient] = useState("");
 
     const addExercise = () => {
-        setRoutineByType(prev => {
-            const updated = { ...prev };
-            const currentList = updated[currentType] || [];
-            updated[currentType] = [...currentList, newExercise];
-            return updated;
+        // Validación: nombre y series requeridas
+        if (newExercise.name.trim() === '' || newExercise.series.trim() === '') {
+            alert("Por favor, completa al menos el nombre del ejercicio y las series.");
+            return;
+        }
+
+        setSections(prev => {
+            const existingIndex = prev.findIndex(section => section.type === currentType);
+
+            if (existingIndex !== -1) {
+                const updatedSection = {
+                    ...prev[existingIndex],
+                    exercises: [...prev[existingIndex].exercises, newExercise]
+                };
+
+                return [
+                    ...prev.slice(0, existingIndex),
+                    updatedSection,
+                    ...prev.slice(existingIndex + 1)
+                ];
+            } else {
+                return [
+                    ...prev,
+                    {
+                        type: currentType,
+                        exercises: [newExercise]
+                    }
+                ];
+            }
         });
 
         setNewExercise({ name: '', series: '', reps: '', weight: '', rir: 0 });
     };
 
-    const saveRoutine = async(e: React.FormEvent) => {
-        e.preventDefault(); // evita recargar
+    const saveRoutine = async (e: React.FormEvent) => {
+        e.preventDefault();
 
         const routineData = {
             clientName,
             createdAt: serverTimestamp(),
-            routine: routineByType
+            sections // usamos el nuevo formato
         };
-        try{
+
+        try {
             const docRef = await addDoc(ref, routineData);
-            console.log("Rutina guardada EXITO id: " , docRef.id);
-
+            console.log("Rutina guardada con éxito, id:", docRef.id);
             setSuccessMessage("✅ Rutina generada con éxito!");
-
-            // Limpiar todo
             setClient("");
-            setRoutineByType({});
-            setNewExercise({ name: '', series: '', reps: '', weight: '', rir: 0 });
-
-            setTimeout(() => setSuccessMessage(null), 3000);
-
-        }catch (error){
-            console.log(error);
+            setSections([]);
+        } catch (error) {
+            console.error(error);
         }
-    }
+    };
 
 
     return (
@@ -185,22 +208,19 @@ function CreateRoutine() {
                 <button type="button" className="add-btn" onClick={addExercise}>+ Añadir ejercicio</button>
                 <button type="submit" className="submit-btn"  onClick={saveRoutine}>Guardar rutina</button>
                 {/* Botón para exportar la rutina a JSON */}
-                <button onClick={() => exportRoutineToJson(clientName, routineByType)}>
+                <button type="button" onClick={() => exportRoutineToJson(clientName, sections)}>
                     Exportar rutina a JSON
                 </button>
 
             </form>
             <div className="tables-wrapper">
                 <h2 className="doc-title">Rutina para: <strong>{clientName || 'No especificado'}</strong></h2>
-                {Object.entries({
-                    ...routineByType,
-                    [currentType]: routineByType[currentType] || [],
-                }).map(([type, exercises]) => (
+                {sections.map((section) => (
                     <RoutineTablePrev
-                        key={type}
-                        exercises={exercises}
+                        key={section.type}
+                        exercises={section.exercises}
                         clientName={clientName}
-                        type={type}
+                        type={section.type}
                     />
                 ))}
             </div>
