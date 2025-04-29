@@ -1,6 +1,8 @@
-import {UserProfile} from "../../../models/UserProfile.tsx";
-import {useState} from "react";
+import {UserProfile, UserRole} from "../../../models/UserProfile.tsx";
+import {useEffect, useState} from "react";
 import '../../../styles/UserProfile.css';
+import {doc, setDoc} from "firebase/firestore";
+import {db} from "../../../firebase/firebaseConfig.tsx";
 
 
 
@@ -10,21 +12,62 @@ interface Props {
 
 
 const UserProfileForm: React.FC<Props> = ({ user }) => {
+    const [isValid, setIsValid] = useState(false);
+    const [formTouched, setFormTouched] = useState(false);
+
     const [formData, setFormData] = useState({
         userName: user.userName || '',
         userLastName: user.userLastName || '',
         userEmail: user.userEmail || '',
-        birthDate: user.birthDate ? user.birthDate.toISOString().split('T')[0] : '',  // 🔥 CORREGIDO aquí
+        birthDate: user.birthDate ? user.birthDate.toISOString().split('T')[0] : '',
+        userRole: user.userRole || 'client',
     });
+    useEffect(() => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const { userName, userLastName, userEmail, birthDate, userRole } = formData;
 
+        const valid =
+            userName.trim() !== "" &&
+            userLastName.trim() !== "" &&
+            emailRegex.test(userEmail) &&
+            birthDate.trim() !== "" &&
+            (userRole === "client" || userRole === "trainer");
+
+        setIsValid(valid);
+    }, [formData]);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormTouched(true);
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+
+    const handleRoleSelect = (role: UserRole) => {
+        setFormTouched(true);
+        setFormData({ ...formData, userRole: role });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Perfil actualizado:', formData);
-        // Aquí enviarías a Firebase/Firestore si quieres guardar
+
+        const profileToSave: UserProfile = {
+            uid: user.uid,
+            userEmail: formData.userEmail,
+            userName: formData.userName,
+            userLastName: formData.userLastName,
+            userPhotoURL: user.userPhotoURL || '',
+            birthDate: formData.birthDate ? new Date(formData.birthDate) : undefined,
+            userRole: formData.userRole,
+            createdAt: user.createdAt || new Date(),
+        };
+
+        try {
+            await setDoc(doc(db, "users", profileToSave.uid), profileToSave);
+            console.log("✅ Perfil actualizado en Firestore:", profileToSave);
+            alert("✅ ¡Guardado con éxito!");
+        } catch (error) {
+            console.error("❌ Error al guardar el perfil:", error);
+            alert("❌ Hubo un error al guardar el perfil.");
+        }
     };
 
     return (
@@ -61,10 +104,34 @@ const UserProfileForm: React.FC<Props> = ({ user }) => {
                     onChange={handleChange}
                 />
                 <div className="role-buttons">
-                    <button type="button" className="btn-role trainer">Entrenador</button>
-                    <button type="button" className="btn-role athlete">Atleta</button>
+                    <button
+                        type="button"
+                        className={`btn-role trainer ${formData.userRole === 'trainer' ? 'active' : ''}`}
+                        onClick={() => handleRoleSelect('trainer')}
+                    >
+                        Entrenador
+                    </button>
+                    <button
+                        type="button"
+                        className={`btn-role athlete ${formData.userRole === 'client' ? 'active' : ''}`}
+                        onClick={() => handleRoleSelect('client')}
+                    >
+                        Atleta
+                    </button>
                 </div>
-                <button type="submit">Save profile</button>
+                <button
+                    type="submit"
+                    className={!isValid || !formTouched ? "btn-disabled" : "btn-submit"}
+                    disabled={!isValid || !formTouched}
+                >
+                    Save profile
+                </button>
+
+                {!isValid && formTouched && (
+                    <p style={{ color: 'red', fontWeight: 'bold' }}>
+                        Completa todos los campos correctamente
+                    </p>
+                )}
             </form>
         </>
     );

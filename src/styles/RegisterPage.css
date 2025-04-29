@@ -96,17 +96,7 @@ form input[type="text"] {
     text-decoration: underline;
 }
 
-button[type="submit"] {
-    width: 100%;
-    background-color: #ccc;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 15px;
-    cursor: not-allowed;
-    margin-top: 10px;
-}
+
 
 .login-text {
     font-size: 13px;

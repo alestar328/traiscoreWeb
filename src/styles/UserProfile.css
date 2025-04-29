@@ -16,7 +16,12 @@
     cursor: pointer;
     transition: transform 0.2s ease;
 }
-
+.btn-role.trainer.active {
+    box-shadow: 0 0 0 3px #28a74580;
+}
+.btn-role.athlete.active {
+    box-shadow: 0 0 0 3px #007bff80;
+}
 .btn-role:hover {
     transform: scale(1.05);
 }
@@ -27,4 +32,31 @@
 
 .btn-role.athlete {
     background-color: #007bff; /* azul */
+}
+.btn-submit {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+}
+.btn-submit:active {
+    transform: scale(0.98);
+    background-color: #218838;
+}
+.btn-disabled {
+    background-color: #ccc;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: not-allowed;
+    width: 100%;
+    margin-top: 10px;
 }

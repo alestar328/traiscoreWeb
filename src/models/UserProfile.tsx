@@ -9,6 +9,7 @@ export interface UserProfile {
     birthDate?: Date;
     userRole: UserRole;
     createdAt?: Date;
+    linkedTrainerUid?: string;
 }
 
 export interface TrainerProfile extends UserProfile {
