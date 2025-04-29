@@ -5,31 +5,20 @@ import { FcGoogle } from 'react-icons/fc';
 import {UserProfile} from "../../../models/UserProfile.tsx";
 import {useState} from "react";
 import UserProfileForm from "./UserProfileForm.tsx";
+import {signInWithGoogle} from "../../../firebase/firebaseConfig.tsx";
 
-const mockGoogleUser = {
-    userName: 'Jane Doe',
-    userEmail: 'jane.doe@gmail.com',
-    userPhotoURL: 'https://i.pravatar.cc/150?img=47',
-    birthDate: new Date('1995-06-15')
-};
+
 
 function RegisterPage() {
 
     const [user, setUser] = useState<UserProfile | null>(null);
-    const handleGoogleSignIn = () => {
-
-        const fullName = mockGoogleUser.userName.split(' ');
-
-        setUser({
-            uid: 'google123',
-            userName: fullName[0] || '',
-            userLastName: fullName.slice(1).join(' ') || '',
-            userEmail: mockGoogleUser.userEmail,
-            userPhotoURL: mockGoogleUser.userPhotoURL,
-            userRole: 'client',
-            birthDate: mockGoogleUser.birthDate,
-            createdAt: new Date(),
-        });
+    const handleGoogleSignIn = async () => {
+        try {
+            const user = await signInWithGoogle();
+            setUser(user); // <-- esto carga tu formulario con datos reales
+        } catch (error) {
+            console.error("Error en login con Google:", error);
+        }
     };
     return (
         <div className="register-wrapper">
