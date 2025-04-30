@@ -1,5 +1,5 @@
-import '../../../App.css'
-import HeroSection from "../../../components/HeroSection.tsx";
+import '../../App.css'
+import HeroSection from "../HeroSection.tsx";
 
 function Home(){
     return (

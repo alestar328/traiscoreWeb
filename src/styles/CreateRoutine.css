@@ -14,7 +14,7 @@ body {
     display: flex;
     justify-content: center;
     padding: 2rem 1rem;
-    background-color: var(--bg);
+    background-color: #3b858c;
     min-height: 90vh;
 }
 

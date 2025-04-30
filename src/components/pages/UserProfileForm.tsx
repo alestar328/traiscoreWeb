@@ -1,9 +1,9 @@
-import {UserProfile, UserRole} from "../../../models/UserProfile.tsx";
+import {UserProfile, UserRole} from "../../models/UserProfile.tsx";
 import {useEffect, useState} from "react";
-import '../../../styles/UserProfile.css';
+import '../../styles/UserProfile.css';
 import {doc, setDoc} from "firebase/firestore";
-import {db} from "../../../firebase/firebaseConfig.tsx";
-
+import {db} from "../../firebase/firebaseConfig.tsx";
+import { useNavigate } from 'react-router-dom';
 
 
 interface Props {
@@ -14,6 +14,7 @@ interface Props {
 const UserProfileForm: React.FC<Props> = ({ user }) => {
     const [isValid, setIsValid] = useState(false);
     const [formTouched, setFormTouched] = useState(false);
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         userName: user.userName || '',
@@ -64,6 +65,11 @@ const UserProfileForm: React.FC<Props> = ({ user }) => {
             await setDoc(doc(db, "users", profileToSave.uid), profileToSave);
             console.log("✅ Perfil actualizado en Firestore:", profileToSave);
             alert("✅ ¡Guardado con éxito!");
+            if (profileToSave.userRole === 'trainer') {
+                navigate('/trainerdashboard');
+            } else {
+                navigate('/clientdashboard');
+            }
         } catch (error) {
             console.error("❌ Error al guardar el perfil:", error);
             alert("❌ Hubo un error al guardar el perfil.");

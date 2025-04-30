@@ -1,12 +1,12 @@
 import { useState, useEffect  } from 'react';
-import { Exercise } from '../types';
-import '../../../styles/CreateRoutine.css';
-import RoutineTablePrev from "../components/RoutineTablePrev.tsx";
-import {firestore} from "../../../firebase.ts";
+import { Exercise } from '../../features/routines/types.tsx';
+import '../../styles/CreateRoutine.css';
+import RoutineTablePrev from "../RoutineTablePrev.tsx";
+import {firestore} from "../../firebase.ts";
 import {addDoc, collection, getDocs} from "@firebase/firestore";
 import { serverTimestamp } from "firebase/firestore";
-import {initDefaultExercises} from "../../../scripts/initDefaultExercises.tsx";
-import {exportRoutineToJson} from "../../../scripts/UsefullFunctions.tsx";
+import {initDefaultExercises} from "../../scripts/initDefaultExercises.tsx";
+import {exportRoutineToJson} from "../../scripts/UsefullFunctions.tsx";
 
 function CreateRoutine() {
     type RoutineSection = {

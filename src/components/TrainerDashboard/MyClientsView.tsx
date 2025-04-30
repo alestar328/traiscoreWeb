@@ -1,5 +1,5 @@
-import ClientCard from "../components/ClientCard.tsx";
-import '../../../styles/MyClientsView.css';
+import ClientCard from "../ClientCard.tsx";
+import '../../styles/MyClientsView.css';
 
 const clients = [
     { fullName: "Ana", lastName: "López", age: 28, gender: "Femenino", sport: "CrossFit" , photoUrl:""},
@@ -22,7 +22,7 @@ const clients = [
 
 function MyClientsView() {
     return (
-        <div className="p-6 bg-gray-100 min-h-screen">
+        <div className="myclients-wrapper">
             <h1 className="text-3xl font-bold text-center mb-8">Mis clientes</h1>
 
             <div className="ClientsContainer">

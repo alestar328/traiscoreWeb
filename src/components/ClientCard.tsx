@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
-import {Button} from "../../../components/Button.tsx";
+import {Button} from "./Button.tsx";
 
 
 interface ClientCardProps {
@@ -28,7 +28,7 @@ const ClientCard: React.FC<ClientCardProps> = ({
             padding: '1rem',
             border: '1px solid #ccc',
             borderRadius: '12px',
-            backgroundColor: '#f9f9f9',
+            backgroundColor: '#000000',
             textAlign: 'center'
         }}>
             <div style={{ marginBottom: '1rem' }}>

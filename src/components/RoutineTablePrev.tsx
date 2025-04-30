@@ -1,5 +1,5 @@
-import {Exercise} from "../types.tsx";
-import '../../../styles/RoutineTablePrev.css';
+import {Exercise} from "../features/routines/types.tsx";
+import '../styles/RoutineTablePrev.css';
 
 interface Props {
     exercises: Exercise[];

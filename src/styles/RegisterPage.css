@@ -1,6 +1,6 @@
 .register-wrapper {
     display: flex;
-    height: 100vh;
+    height: 80vh;
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -12,7 +12,7 @@
     display: flex;
     align-items: start;       /* Cambiado de center a start */
     justify-content: center;
-    padding: 80px 60px 40px;  /* Añadimos padding-top más alto para "subir" */
+    padding: 60px 60px 40px;  /* Añadimos padding-top más alto para "subir" */
     position: relative;
 }
 
@@ -23,7 +23,7 @@
 
 .left-content img {
     width: 100%;
-    max-width: 360px;           /* Aumentado de 300px */
+    max-width: 450px;           /* Aumentado de 300px */
     border-radius: 20px;        /* Bordes redondeados */
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
@@ -157,4 +157,19 @@ form input[type="text"] {
     font-weight: bold;
     color: #000;
     text-decoration: underline;
+}
+
+.btn-secondary-login {
+    margin-top: 10px;
+    width: 100%;
+    background-color: transparent;
+    color: #007bff;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.btn-secondary-login:hover {
+    color: #0056b3;
 }

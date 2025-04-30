@@ -1,55 +1,117 @@
+/* Estilo general del contenedor */
 .login-container {
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
-    background-color: #9bffff;
+    background: linear-gradient(135deg, #3b858c, #1f2128);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Tarjeta del formulario */
 .login-card {
-    background: #005a91;
-    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2rem 3rem;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
+}
+
+/* Título del formulario */
+.login-title {
     text-align: center;
+    margin-bottom: 1.5rem;
+    color: #3b858c;
 }
 
-.login-icon {
-    width: 60px;
-    height: 40px;
-    margin: 20px 0;
-}
-
+/* Estilo del formulario */
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    text-align: left;
 }
 
+/* Etiquetas de los campos */
 .login-form label {
-    font-size: 14px;
-    font-weight: 500;
-    color: white;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 600;
 }
 
-.login-form input {
+/* Campos de entrada */
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+/* Opciones adicionales */
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+/* Recordarme */
+.remember-me {
+    display: flex;
+    align-items: center;
+}
+
+.remember-me input {
+    margin-right: 0.5rem;
+}
+
+/* Enlace de contraseña olvidada */
+.forgot-password {
+    color: #3b858c;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Botón de inicio de sesión */
+.login-button {
+    padding: 0.75rem;
+    background-color: #3b858c;
+    color: #fff;
     border: none;
-    border-bottom: 1px solid #aaa;
-    padding: 10px 5px;
-    font-size: 16px;
-    outline: none;
-    background-color: transparent;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.login-btn {
-    background: linear-gradient(90deg, #00c6ff, #7f00ff);
-    color: white;
-    border-radius: 30px;
-    width: 100%;
+.login-button:hover {
+    background-color: #336f75;
+}
+
+/* Enlace de registro */
+.signup-link {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.signup-link a {
+    color: #3b858c;
+    text-decoration: none;
     font-weight: bold;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+.divider {
+    text-align: center;
+    margin: 1rem 0;
+    font-weight: bold;
+    color: #999;
 }

@@ -1,5 +1,5 @@
 import { FaFacebookF, FaTwitter, FaPaperPlane, FaInstagram } from 'react-icons/fa';
-import '../../../styles/FooterComp.css';
+import '../styles/FooterComp.css';
 
 const FooterComp = () => {
     return (

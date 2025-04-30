@@ -1,11 +1,11 @@
 
-import '../../../styles/RegisterPage.css';
-import registerPic from "../../../assets/register_mainpic.png";
+import '../../styles/RegisterPage.css';
+import registerPic from "../../assets/register_mainpic.png";
 import { FcGoogle } from 'react-icons/fc';
-import {UserProfile} from "../../../models/UserProfile.tsx";
+import {UserProfile} from "../../models/UserProfile.tsx";
 import {useState} from "react";
 import UserProfileForm from "./UserProfileForm.tsx";
-import {signInWithGoogle} from "../../../firebase/firebaseConfig.tsx";
+import {signInWithGoogle} from "../../firebase/firebaseConfig.tsx";
 
 
 
@@ -34,19 +34,19 @@ function RegisterPage() {
                         <UserProfileForm user={user} />
                     ) : (
                         <>
-                            <h2>Sign up now</h2>
+                            <h2>Regístrate ahora</h2>
                             <button className="btn-google" onClick={handleGoogleSignIn}>
                                 <FcGoogle size={20} />
-                                Sign up with Google
+                                Regístrate con Google
                             </button>
 
                             <p className="terms-text">
                                 By signing up, you agree to our <a href="#">Terms of use</a> and <a href="#">Privacy Policy</a>.
                             </p>
 
-                            <p className="login-text">
-                                Already have an account? <a href="#">Log in</a>
-                            </p>
+                            <button className="btn-secondary-login">
+                                ¿Ya tienes cuenta? Entra
+                            </button>
                         </>
                     )}
                 </div>

@@ -1,0 +1,174 @@
+.trainer-dashboard {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #3b858c;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: #39393b;
+}
+
+.dashboard-main {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.dashboard-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+
+.membership-summary {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.membership-card {
+    width: 140px;
+    border-radius: 12px;
+    padding: 16px 12px;
+    background-color: #fdfdfd;
+    text-align: center;
+    border: 2px solid transparent;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.membership-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+.membership-card .price {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.membership-card .card-footer {
+    margin-top: 12px;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 0 0 8px 8px;
+    padding: 8px;
+    font-weight: normal;
+}
+.review-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+
+.review-table th,
+.review-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+
+.review-table th {
+    background-color: #f2f2f2;
+}
+.dashboard-row {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.membership-section {
+    text-align: center;
+    background: #ffe2b6;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.membership-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.membership-total {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #111;
+}
+
+.review-section .review-table {
+    margin-top: 10px;
+}
+.access-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.access-btn {
+    width: 140px;
+    height: 120px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.access-btn:hover {
+    transform: scale(1.05);
+}
+
+
+.access-icon {
+    font-size: 40px; /* Tamaño grande para el icono */
+    margin-bottom: 8px;
+}
+/* Estilos por color */
+.access-btn.black {
+    background-color: #000;
+    color: white;
+}
+
+.access-btn.yellow {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.access-btn.green {
+    background-color: #28a745;
+    color: white;
+}
+/* Colores específicos por plan */
+.membership-card.básica {
+    background-color: #fff8f0;
+    border-color: #ffcf99;
+}
+
+.membership-card.estándar {
+    background-color: #fff8f0;
+    border-color: #ffc107;
+}
+
+.membership-card.premium {
+    background-color: #f0f8ff;
+    border-color: #87ceeb;
+}
+
+.membership-card.élite {
+    background-color: #f0fff5;
+    border-color: #90ee90;
+}
