@@ -1,5 +1,9 @@
 import ClientCard from "../ClientCard.tsx";
 import '../../styles/MyClientsView.css';
+import {Button} from "../Button.tsx";
+import {Link, useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {useAuth} from "../../contexts/AuthContext.tsx";
 
 const clients = [
     { fullName: "Ana", lastName: "López", age: 28, gender: "Femenino", sport: "CrossFit" , photoUrl:""},
@@ -21,10 +25,24 @@ const clients = [
 
 
 function MyClientsView() {
+
+    const [ click, setClick] = useState(false);
+    const [button, setButton] = useState(true);
+    const { currentUser } = useAuth();
+    const navigate = useNavigate();
+
+
+    const handleClick = () => setClick(!click);
+    const closeMobileMenu = () =>setClick(false);
+
     return (
         <div className="myclients-wrapper">
             <h1 className="text-3xl font-bold text-center mb-8">Mis clientes</h1>
-
+            <Button>
+                <Link to='/clientregistrationform' onClick={closeMobileMenu}>
+                Dar alta cliente
+                    </Link>
+            </Button>
             <div className="ClientsContainer">
                 {clients.map((client, index) => (
                     <ClientCard

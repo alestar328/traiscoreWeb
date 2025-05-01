@@ -13,6 +13,7 @@ import RegisterPage from "./components/pages/RegisterPage.tsx";
 import ClientDashboard from "./components/ClientDashboard/ClientDashboard.tsx";
 import TrainerDashboard from "./components/TrainerDashboard/TrainerDashboard.tsx";
 import ContactWebForm from "./components/pages/ContactWebForm.tsx";
+import ClientRegistrationForm from "./components/TrainerDashboard/ClientRegistrationForm.tsx";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
                 <Route path='/trainerdashboard' element={<TrainerDashboard/>}/>
                 <Route path='/clientdashboard' element={<ClientDashboard/>}/>
                 <Route path='/contactwebform' element={<ContactWebForm/>}/>
+                <Route path='/clientregistrationform' element={<ClientRegistrationForm/>}/>
             </Routes>
           <FooterComp/>
       </Router>

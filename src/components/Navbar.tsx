@@ -1,13 +1,17 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import logo from "../assets/navLogoWhiteS.png";
 import {useState, useEffect} from "react";
 import {Button} from "./Button.tsx";
 import '../styles/Navbar.css';
+import {useAuth} from "../contexts/AuthContext.tsx";
+import {getAuth, signOut } from "firebase/auth";
 
 function Navbar() {
 
     const [ click, setClick] = useState(false);
     const [button, setButton] = useState(true);
+    const { currentUser } = useAuth();
+    const navigate = useNavigate();
 
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () =>setClick(false);
@@ -18,12 +22,32 @@ function Navbar() {
         }else {
             setButton(true);
         }
-    }
+    };
+    const handleLogout = async () => {
+        const auth = getAuth();
+        try {
+            await signOut(auth);
+            navigate('/');
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        }
+    };
+
+    const handleDashboardRedirect = () => {
+        if (!currentUser) return;
+        const role = currentUser.userRole;
+        if (role === "trainer") {
+            navigate("/trainerdashboard");
+        } else if (role === "client") {
+            navigate("/clientdashboard");
+        }
+    };
 
     useEffect(() => {
-        showButton()
+        showButton();
+        window.addEventListener('resize', showButton);
+        return () => window.removeEventListener('resize', showButton);
     }, []);
-    window.addEventListener('resize', showButton);
 
     return(
         <>
@@ -49,12 +73,23 @@ function Navbar() {
                             </Link>
                         </li>
 
-
+                        {button && currentUser && (
+                            <Button buttonStyle="btn--primary" onClick={handleDashboardRedirect}>
+                                Mi Panel
+                            </Button>
+                        )}
                     </ul>
+
                     {button && (
-                        <Link to="/login" className="btn-link">
-                            <Button buttonStyle='btn--outline'>Inicia Sesión</Button>
-                        </Link>
+                        currentUser ? (
+                            <Button buttonStyle="btn--outline" onClick={handleLogout}>
+                                Cerrar Sesión
+                            </Button>
+                        ) : (
+                            <Link to="/login" className="btn-link">
+                                <Button buttonStyle="btn--outline">Inicia Sesión</Button>
+                            </Link>
+                        )
                     )}
                 </div>
             </nav>
