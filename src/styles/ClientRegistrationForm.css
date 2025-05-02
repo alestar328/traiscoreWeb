@@ -2,8 +2,8 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9;
     border-radius: 8px;
+    background-color: #ffe2b6;
 }
 
 .form-container h2 {
@@ -25,7 +25,7 @@ form {
 .form-main {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 10px 20px;
 }
 
 .form-group {
@@ -34,8 +34,32 @@ form {
 }
 
 .form-group label {
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+}
+.form-actions {
+    display: flex;
+    gap: 12px;           /* espacio entre botones */
+    margin-top: 10px;    /* separación respecto al form-layout */
+}
+.form-actions .btn {
+    flex: 1;             /* que los tres ocupen el mismo ancho */
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     font-weight: bold;
+}
+.form-actions .cancel {
+    background-color: #e74c3c; /* rojo */
+    color: white;
+}
+.form-actions .send {
+    background-color: #f1c40f; /* amarillo */
+    color: black;              /* contraste para legibilidad */
+}
+.form-actions .save {
+    background-color: #3b858c; /* tu verde original */
+    color: white;
 }
 
 .form-group input,
@@ -51,6 +75,11 @@ form {
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
+    grid-auto-flow: column;
+    gap: 15px 20px;
 }
 
 .measurements-section legend {
@@ -58,18 +87,10 @@ form {
     padding: 0 10px;
 }
 
-button[type='submit'] {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #3b858c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
 
-button[type='submit']:hover {
-    background-color: #2c6a70;
+
+.form-actions .btn:hover {
+    opacity: 0.6;
 }
 .photo-placeholder {
     display: flex;

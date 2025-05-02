@@ -60,6 +60,7 @@ function Navbar() {
                     <div className="menu-icon" onClick={handleClick}>
                         <i className={click ? 'fas fa-times' : 'fas fa-bars'}/>
                     </div>
+
                     <ul className={click ? 'nav-menu active' : 'nav-menu'}>
                         <li className='nav-item'>
                             <Link to='/' className='nav-links' onClick={closeMobileMenu}>
@@ -72,25 +73,44 @@ function Navbar() {
                                 Contáctanos
                             </Link>
                         </li>
-
                         {button && currentUser && (
-                            <Button buttonStyle="btn--primary" onClick={handleDashboardRedirect}>
-                                Mi Panel
-                            </Button>
-                        )}
-                    </ul>
+                            <>
+                            <li className='nav-item'>
+                                <Link to='/clientregistrationform' className='nav-links' onClick={closeMobileMenu}>
+                                    Alta cliente
+                                </Link>
+                            </li>
 
-                    {button && (
-                        currentUser ? (
-                            <Button buttonStyle="btn--outline" onClick={handleLogout}>
-                                Cerrar Sesión
-                            </Button>
-                        ) : (
+                            <li className='nav-item'>
+                                <Link to='/createRoutine' className='nav-links' onClick={closeMobileMenu}>
+                                    Nueva rutina
+                                </Link>
+                            </li>
+
+                            <li className='nav-item'>
+                                <Button buttonStyle="btn--primary" onClick={handleDashboardRedirect}>
+                                    Mi Panel
+                                </Button>
+                            </li>
+
+                            <li className="nav-item">
+                                <Button buttonStyle="btn--outline" onClick={handleLogout}>
+                                    Cerrar Sesión
+                                </Button>
+                            </li>
+                            </>
+                            )}
+
+
+                        {button && !currentUser &&(
+
+                            <li className="nav-item">
                             <Link to="/login" className="btn-link">
                                 <Button buttonStyle="btn--outline">Inicia Sesión</Button>
                             </Link>
-                        )
+                            </li>
                     )}
+                    </ul>
                 </div>
             </nav>
         </>

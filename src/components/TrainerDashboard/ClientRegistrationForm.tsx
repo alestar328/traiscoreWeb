@@ -1,10 +1,13 @@
 import {useState} from "react";
 import "../../styles/ClientRegistrationForm.css";
 import {FaUserCircle} from "react-icons/fa";
+import {useNavigate} from "react-router-dom";
 
 
 
 const ClientRegistrationForm: React.FC = () => {
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         fullName: '',
         birthDate: '',
@@ -176,7 +179,7 @@ const ClientRegistrationForm: React.FC = () => {
                                 <label>Altura (cm):</label>
                                 <input
                                     type="number"
-                                    name="calf"
+                                    name="height"
                                     value={formData.measurements.calf}
                                     onChange={handleChange}
                                 />
@@ -185,7 +188,7 @@ const ClientRegistrationForm: React.FC = () => {
                                 <label>Peso (kg):</label>
                                 <input
                                     type="number"
-                                    name="calf"
+                                    name="weight"
                                     value={formData.measurements.calf}
                                     onChange={handleChange}
                                 />
@@ -252,8 +255,16 @@ const ClientRegistrationForm: React.FC = () => {
                         </fieldset>
                     </div>
                 </div>
+                <div className="form-actions">
+                    <button type="button" className="btn cancel" onClick={() => {
+                        navigate('/trainerdashboard');
+                    }}>
 
-                <button type="submit">Enviar</button>
+                        Cancelar
+                    </button>
+                    <button type="submit" className="btn send">Enviar a cliente</button>
+                    <button type="submit" className="btn save">Guardar</button>
+                </div>
             </form>
         </div>
     );

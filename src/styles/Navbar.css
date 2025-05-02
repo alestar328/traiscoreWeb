@@ -1,5 +1,5 @@
 .navbar {
-    background: linear-gradient(90deg, rgb(28, 27, 27) 0%, rgb(26, 23, 23) 100%);
+    background: #1F2128;
     height: 80px;
     display: flex;
     justify-content: center;
@@ -12,10 +12,11 @@
 
 .navbar-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 80px;
     max-width: 1500px;
+    margin: 0 auto;
 }
 
 .navbar-logo {
@@ -38,19 +39,15 @@
 }
 
 .nav-menu {
-    display: grid;
-    grid-template-columns: repeat(4, auto);
-    grid-gap: 10px;
+    display: flex;            /* fila flexible */
+    align-items: center;
+    gap: 1rem;                /* espacio entre cada <li> */
     list-style: none;
-    text-align: center;
-    width: 60vw;
-    justify-content: end;
-    margin-right: 2rem;
+    margin: 0;
+    padding: 0;
 }
 
-.nav-item {
-    height: 80px;
-}
+
 
 .nav-links {
     color: #fff;
