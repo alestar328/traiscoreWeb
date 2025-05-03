@@ -17,25 +17,28 @@ import ClientRegistrationForm from "./components/TrainerDashboard/ClientRegistra
 
 function App() {
   return (
-    <>
-      <Router>
-            <Navbar/>
-            <Routes>
-                <Route path='/' element={<Home/>}/>
-                <Route path="/login" element={<Login/>} />
-                <Route path="/register" element={<RegisterPage/>} />
-                <Route path='/createRoutine' element={<CreateRoutine/>}/>
-                <Route path='/myclients' element={<MyClientsView/>}/>
-                <Route path='/clientprofile' element={<ClientProfileForm/>}/>
-                <Route path='/trainerdashboard' element={<TrainerDashboard/>}/>
-                <Route path='/clientdashboard' element={<ClientDashboard/>}/>
-                <Route path='/contactwebform' element={<ContactWebForm/>}/>
-                <Route path='/clientregistrationform' element={<ClientRegistrationForm/>}/>
-            </Routes>
-          <FooterComp/>
-      </Router>
-    </>
-  )
-}
 
-export default App
+          <div className="app-container">
+              <Router>
+                  <Navbar/>
+                  <div className="app-content">
+                      <Routes>
+                          <Route path='/' element={<Home/>}/>
+                          <Route path="/login" element={<Login/>}/>
+                          <Route path="/register" element={<RegisterPage/>}/>
+                          <Route path='/createRoutine' element={<CreateRoutine/>}/>
+                          <Route path='/myclients' element={<MyClientsView/>}/>
+                          <Route path='/clientprofile/:uid' element={<ClientProfileForm/>}/>
+                          <Route path='/trainerdashboard' element={<TrainerDashboard/>}/>
+                          <Route path='/clientdashboard' element={<ClientDashboard/>}/>
+                          <Route path='/contactwebform' element={<ContactWebForm/>}/>
+                          <Route path='/clientregistrationform' element={<ClientRegistrationForm/>}/>
+                      </Routes>
+                  </div>
+                  <FooterComp/>
+              </Router>
+          </div>
+          )
+          }
+
+          export default App

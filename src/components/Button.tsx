@@ -1,5 +1,5 @@
 import '../styles/Button.css';
-import {ButtonProps, STYLES, SIZES, ButtonStyle, ButtonSize} from '../interfaces/ButtonProps.tsx';
+import {ButtonProps, STYLES, SIZES, ButtonStyle, ButtonSize} from '../models/ButtonProps.tsx';
 
 export const Button: React.FC<ButtonProps> = ({
     className,

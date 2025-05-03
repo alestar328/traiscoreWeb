@@ -74,7 +74,11 @@
 .menu-icon {
     display: none;
 }
-
+.btn--logout {
+    background-color: #e74c3c !important;
+    border-color:     #e74c3c !important;
+    color:            white    !important;
+}
 @media screen and (max-width: 960px) {
     .NavbarItems {
         position: relative;

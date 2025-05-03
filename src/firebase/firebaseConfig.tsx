@@ -4,6 +4,8 @@ import {doc, getDoc, getFirestore, setDoc} from "firebase/firestore";
 import {UserProfile} from "../models/UserProfile.tsx";
 import { getAuth , signInWithPopup, GoogleAuthProvider, UserCredential} from 'firebase/auth';
 import {getAnalytics} from "firebase/analytics";
+import { getStorage } from "firebase/storage";
+
 
 
 
@@ -24,7 +26,7 @@ const analytics = getAnalytics(app);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
-
+export const storage = getStorage(app);
 export const signInWithGoogle = async (): Promise<UserProfile> => {
     const result: UserCredential = await signInWithPopup(auth, provider);
     const googleUser = result.user;
@@ -34,7 +36,7 @@ export const signInWithGoogle = async (): Promise<UserProfile> => {
         uid: googleUser.uid,
         userName: fullName[0] || '',
         userLastName: fullName.slice(1).join(' ') || '',
-        userEmail: googleUser.email || '',
+        email: googleUser.email || '',
         userPhotoURL: googleUser.photoURL || '',
         userRole: 'client', // Default: 'client'
         createdAt: new Date(),

@@ -1,65 +1,58 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faUser} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import {Button} from "./Button.tsx";
+import {ClientProfile} from "../models/UserProfile.tsx";
+import {calculateAge} from "../utils/UsefullFunctions.tsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUser} from "@fortawesome/free-solid-svg-icons";
+import "../../src/styles/ClientCard.css";
 
 
-interface ClientCardProps {
-    fullName: string;
-    lastName: string;
-    age: number;
-    gender: string;
-    sport: string;
-    photoUrl?: string; // Opcional
-}
+const ClientCard: React.FC<ClientProfile> = ({
+                                                 uid,
+                                                 userName,
+                                                 userLastName,
+                                                 birthDate,
+                                                 gender,
+                                                 userPhotoURL,
+                                             }) => {
+    const age = birthDate ? calculateAge(birthDate) : '—';
 
-const ClientCard: React.FC<ClientCardProps> = ({
-                                                   fullName,
-                                                   lastName,
-                                                   age,
-                                                   gender,
-                                                   sport,
-                                                   photoUrl
-                                               }) => {
     return (
-        <div style={{
-            width: '220px',
-            padding: '1rem',
-            border: '1px solid #ccc',
-            borderRadius: '12px',
-            backgroundColor: '#000000',
-            textAlign: 'center'
-        }}>
-            <div style={{ marginBottom: '1rem' }}>
-                {photoUrl ? (
+        <div className="client-card">
+            <div className="client-avatar">
+                {userPhotoURL ? (
                     <img
-                        src={photoUrl}
-                        alt={`${fullName} ${lastName}`}
-                        style={{
-                            width: '80px',
-                            height: '80px',
-                            borderRadius: '50%',
-                            objectFit: 'cover'
-                        }}
+                        src={userPhotoURL}
+                        alt={`${userName} ${userLastName}`}
+                        className="avatar-image"
                     />
                 ) : (
-
-                    <FontAwesomeIcon
-                        icon={faUser}
-                        style={{ fontSize: '60px', color: '#ccc' }}
-                    />
+                    <FontAwesomeIcon icon={faUser} className="avatar-icon" />
                 )}
             </div>
-            <h3 style={{ margin: 0 }}>{fullName} {lastName}</h3>
-            <p style={{ margin: '4px 0' }}>Edad: {age}</p>
-            <p style={{ margin: '4px 0' }}>Sexo: {gender}</p>
-            <p style={{ margin: '4px 0' }}>Deporte: {sport}</p>
-            <Link to="/clientprofile">
-                <Button buttonStyle="btn--outline" buttonSize="btn--large" className="login-btn">
-                    Ver perfil
-                </Button>
-            </Link>
+
+            <div className="client-details">
+                <h3 className="client-name">
+                    {userName} {userLastName}
+                </h3>
+
+                <p className="client-info">
+                    <strong>Edad:</strong> {age}
+                </p>
+
+                {gender && (
+                    <p className="client-info">
+                        <strong>Sexo:</strong> {gender === 'male' ? 'Masculino' : gender === 'female' ? 'Femenino' : 'Otro'}
+                    </p>
+                )}
+
+                <Link to={`/clientprofile/${uid}`}> {/* Ajusta ruta si fuera necesario */}
+                    <Button buttonStyle="btn--outline" buttonSize="btn--large">
+                        Ver perfil
+                    </Button>
+                </Link>
+            </div>
         </div>
     );
 };

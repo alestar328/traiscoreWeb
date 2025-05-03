@@ -97,12 +97,38 @@ form {
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
-    color: #666;
+    position: relative;
 }
 
 .photo-icon {
-    font-size: 120px;
+    font-size: 200px;
     color: #ccc;
+}
+.photo-icon,
+.photo-preview {
+    font-size: 200px;
+    color: #ccc;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.photo-placeholder .tooltip {
+    position: absolute;
+    bottom: -25px;
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.photo-placeholder:hover .tooltip {
+    opacity: 1;
 }
 @media (max-width: 768px) {
     .form-layout {

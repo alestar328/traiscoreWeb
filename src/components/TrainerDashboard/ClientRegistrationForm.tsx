@@ -1,24 +1,29 @@
-import {useState} from "react";
+import {ChangeEvent, useRef, useState} from "react";
 import "../../styles/ClientRegistrationForm.css";
-import {FaUserCircle} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "../../contexts/AuthContext.tsx";
+import {db, storage } from "../../firebase/firebaseConfig.tsx";
+import {addDoc, collection, updateDoc, serverTimestamp, doc} from "firebase/firestore";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
 
 
 
 const ClientRegistrationForm: React.FC = () => {
     const navigate = useNavigate();
+    const { currentUser } = useAuth();
 
     const [formData, setFormData] = useState({
-        fullName: '',
+
+        userName: '',
+        userLastName: '',
         birthDate: '',
         gender: '',
         email: '',
         phone: '',
         address: '',
-        registrationReason: '',
-        activityLevel: '',
-        medicalHistory: '',
-        goals: '',
+        registrationDate: new Date().toISOString().split('T')[0],
         measurements: {
             height:'',
             weight:'',
@@ -30,6 +35,10 @@ const ClientRegistrationForm: React.FC = () => {
             calf: '',
         },
     });
+
+    const [photoFile, setPhotoFile] = useState<File | null>(null);
+    const [photoPreview, setPhotoPreview] = useState<string>("");
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -50,34 +59,112 @@ const ClientRegistrationForm: React.FC = () => {
             }));
         }
     };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log('Datos del formulario:', formData);
-        // Aquí puedes agregar la lógica para enviar los datos a tu backend o base de datos
+    const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] ?? null;
+        if (!file) return;
+        setPhotoFile(file);
+        setPhotoPreview(URL.createObjectURL(file));
     };
+    const handlePhotoClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!currentUser) {
+            alert("Debes estar logueado como entrenador para crear un cliente.");
+            return;
+        }
+
+        try {
+            // 1) Referencia a la sub‐colección `clients` de este trainer
+            const clientsRef = collection(
+                db,
+                "users",
+                currentUser.uid,
+                "clients"
+            );
+
+            // 2) Añadimos el doc con linkedTrainerUid y timestamp
+            const docRef = await addDoc(clientsRef, {
+                ...formData,
+                registrationDate: new Date(formData.registrationDate),
+                measurements: {
+                    height: Number(formData.measurements.height),
+                    weight: Number(formData.measurements.weight),
+                    neck:   Number(formData.measurements.neck),
+                    chest:  Number(formData.measurements.chest),
+                    arms:   Number(formData.measurements.arms),
+                    waist:  Number(formData.measurements.waist),
+                    thigh:  Number(formData.measurements.thigh),
+                    calf:   Number(formData.measurements.calf)
+                },
+                linkedTrainerUid: currentUser.uid,
+                createdAt: serverTimestamp()
+            });
+            if (photoFile) {
+                const path = `users/${currentUser.uid}/clients/${docRef.id}/photo.jpg`;
+                const imgRef = storageRef(storage, path);
+                await uploadBytes(imgRef, photoFile);
+                const url = await getDownloadURL(imgRef);
+                await updateDoc(doc(db, "users", currentUser.uid, "clients", docRef.id), { userPhotoURL: url });
+            }
+            alert("Cliente registrado con éxito.");
+            navigate("/trainerdashboard");
+        } catch (err) {
+            console.error("Error al crear cliente:", err);
+            alert("No se pudo crear el cliente. Intenta de nuevo.");
+        }
+    };
+
 
     return (
         <div className="form-container">
-            <div className="photo-placeholder">
-                <FaUserCircle className="photo-icon"/>
-                <p>Foto del cliente</p>
+            <div
+                className="photo-placeholder"
+                onMouseEnter={() => {/* podrías cambiar estado para tooltip */
+                }}
+                onClick={handlePhotoClick}
+                style={{position: "relative", cursor: "pointer"}}
+            >
+                {photoPreview
+                    ? <img src={photoPreview} alt="Foto cliente" className="photo-preview"/>
+                    : <FontAwesomeIcon icon={faUserCircle} className="photo-icon"/>}
+                <span className="tooltip">Añadir foto</span>
+
+                {/* input file oculto */}
+                <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    style={{display: "none"}}
+                    onChange={handlePhotoChange}
+                />
             </div>
             <h2>Formulario de Registro de Cliente</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-layout">
                     <div className="form-main">
                         <div className="form-group">
-                            <label>Nombre completo:</label>
+                            <label>Nombres:</label>
                             <input
                                 type="text"
-                                name="fullName"
-                                value={formData.fullName}
+                                name="userName"
+                                value={formData.userName}
                                 onChange={handleChange}
                                 required
                             />
                         </div>
-
+                        <div className="form-group">
+                            <label>Apellidos:</label>
+                            <input
+                                type="text"
+                                name="userLastName"
+                                value={formData.userLastName}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
                         <div className="form-group">
                             <label>Fecha de nacimiento:</label>
                             <input
@@ -88,7 +175,16 @@ const ClientRegistrationForm: React.FC = () => {
                                 required
                             />
                         </div>
-
+                        <div className="form-group">
+                            <label>Fecha de alta:</label>
+                            <input
+                                type="date"
+                                name="registrationDate"
+                                value={formData.registrationDate}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
                         <div className="form-group">
                             <label>Género:</label>
                             <select
@@ -137,39 +233,6 @@ const ClientRegistrationForm: React.FC = () => {
                         </div>
 
 
-                        <div className="form-group">
-                            <label>Nivel de actividad física:</label>
-                            <select
-                                name="activityLevel"
-                                value={formData.activityLevel}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="">Seleccione</option>
-                                <option value="beginner">Principiante</option>
-                                <option value="intermediate">Intermedio</option>
-                                <option value="advanced">Avanzado</option>
-                            </select>
-                        </div>
-
-                        <div className="form-group">
-                            <label>Historial médico o lesiones previas:</label>
-                            <textarea
-                                name="medicalHistory"
-                                value={formData.medicalHistory}
-                                onChange={handleChange}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Objetivos del cliente:</label>
-                            <textarea
-                                name="goals"
-                                value={formData.goals}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
                     </div>
 
                     <div className="form-measurements">
@@ -180,7 +243,7 @@ const ClientRegistrationForm: React.FC = () => {
                                 <input
                                     type="number"
                                     name="height"
-                                    value={formData.measurements.calf}
+                                    value={formData.measurements.height}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -189,7 +252,7 @@ const ClientRegistrationForm: React.FC = () => {
                                 <input
                                     type="number"
                                     name="weight"
-                                    value={formData.measurements.calf}
+                                    value={formData.measurements.weight}
                                     onChange={handleChange}
                                 />
                             </div>

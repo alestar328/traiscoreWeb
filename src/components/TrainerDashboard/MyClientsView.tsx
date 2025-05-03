@@ -1,63 +1,99 @@
 import ClientCard from "../ClientCard.tsx";
 import '../../styles/MyClientsView.css';
-import {Button} from "../Button.tsx";
-import {Link, useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useAuth} from "../../contexts/AuthContext.tsx";
+import {collection, getDocs, Timestamp, QueryDocumentSnapshot, DocumentData} from "@firebase/firestore";
+import {db} from "../../firebase/firebaseConfig.tsx";
+import {ClientFirestoreData, ClientProfile} from "../../models/UserProfile.tsx";
+import DeleteDragButton from "../DeleteDragButton.tsx";
 
-const clients = [
-    { fullName: "Ana", lastName: "López", age: 28, gender: "Femenino", sport: "CrossFit" , photoUrl:""},
-    { fullName: "Carlos", lastName: "Martínez", age: 35, gender: "Masculino", sport: "Ciclismo" },
-    { fullName: "Lucía", lastName: "Pérez", age: 24, gender: "Femenino", sport: "Yoga" },
-    { fullName: "David", lastName: "Gómez", age: 40, gender: "Masculino", sport: "Boxeo" },
-    { fullName: "Laura", lastName: "Ramírez", age: 32, gender: "Femenino", sport: "Pilates" },
-    { fullName: "Jorge", lastName: "Fernández", age: 30, gender: "Masculino", sport: "Running" },
-    { fullName: "Sofía", lastName: "Torres", age: 22, gender: "Femenino", sport: "Natación" },
-    { fullName: "Mario", lastName: "Ruiz", age: 27, gender: "Masculino", sport: "Triatlón" },
-    { fullName: "Elena", lastName: "Mendoza", age: 31, gender: "Femenino", sport: "Pádel" },
-    { fullName: "Andrés", lastName: "Vega", age: 29, gender: "Masculino", sport: "CrossFit" },
-    { fullName: "Isabel", lastName: "Romero", age: 34, gender: "Femenino", sport: "Ciclismo" },
-    { fullName: "Pedro", lastName: "Navarro", age: 38, gender: "Masculino", sport: "Fútbol" },
-];
+export default function MyClientsView() {
 
-
-
-
-
-function MyClientsView() {
-
-    const [ click, setClick] = useState(false);
-    const [button, setButton] = useState(true);
     const { currentUser } = useAuth();
-    const navigate = useNavigate();
+    const [clients, setClients] = useState<ClientProfile[]>([]);
+    const wrapperRef = useRef<HTMLDivElement>(null);
 
+    useEffect(() => {
+        if (!currentUser) return;
 
-    const handleClick = () => setClick(!click);
-    const closeMobileMenu = () =>setClick(false);
+        const fetchClients = async () => {
+            const clientsRef = collection(db, 'users', currentUser.uid, 'clients');
+            const snapshot = await getDocs(clientsRef);
+
+            const list = snapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
+                // Forzamos el tipo de data a nuestro interface
+                const data = doc.data() as ClientFirestoreData;
+
+                // Convertir birthDate
+                let birth: Date | undefined;
+                if (data.birthDate) {
+                    if (data.birthDate instanceof Timestamp) {
+                        birth = data.birthDate.toDate();
+                    } else if (typeof data.birthDate === 'string' || typeof data.birthDate === 'number') {
+                        birth = new Date(data.birthDate);
+                    } else {
+                        birth = data.birthDate as Date;
+                    }
+                }
+
+                // Convertir registrationDate
+                let registration: Date;
+                if (data.registrationDate instanceof Timestamp) {
+                    registration = data.registrationDate.toDate();
+                } else if (typeof data.registrationDate === 'string' || typeof data.registrationDate === 'number') {
+                    registration = new Date(data.registrationDate);
+                } else {
+                    registration = data.registrationDate as Date;
+                }
+
+                return {
+                    uid: doc.id,
+                    userName: data.userName,
+                    userLastName: data.userLastName,
+                    email: data.email,
+                    birthDate: birth,
+                    registrationDate: registration,
+                    gender: data.gender,
+                    userPhotoURL: data.userPhotoURL,
+                    measurements: data.measurements,
+                    linkedTrainerUid: data.linkedTrainerUid,
+                    createdAt:
+                        data.createdAt instanceof Timestamp
+                            ? data.createdAt.toDate()
+                            : (data.createdAt as Date | undefined),
+                    userRole: 'client'
+                } as ClientProfile;
+            });
+
+            setClients(list);
+        };
+
+        fetchClients();
+    }, [currentUser]);
 
     return (
-        <div className="myclients-wrapper">
+        <div ref={wrapperRef} className="myclients-wrapper">
             <h1 className="text-3xl font-bold text-center mb-8">Mis clientes</h1>
-            <Button>
-                <Link to='/clientregistrationform' onClick={closeMobileMenu}>
-                Dar alta cliente
-                    </Link>
-            </Button>
+
             <div className="ClientsContainer">
-                {clients.map((client, index) => (
+                {clients.map(c => (
                     <ClientCard
-                        key={index}
-                        fullName={client.fullName}
-                        lastName={client.lastName}
-                        age={client.age}
-                        gender={client.gender}
-                        sport={client.sport}
-                        photoUrl={client.photoUrl}
+                        key={c.uid}
+                        uid={c.uid}
+                        userName={c.userName}
+                        userLastName={c.userLastName}
+                        birthDate={c.birthDate!}
+                        gender={c.gender}
+                        userPhotoURL={c.userPhotoURL}
+                        userRole={c.userRole}
+                        email={c.email!}
                     />
                 ))}
             </div>
+            <DeleteDragButton
+                boundsRef={wrapperRef}
+                onClick={() => console.log("Eliminar pulsado")}
+            />
         </div>
     );
 }
-
-export default MyClientsView;

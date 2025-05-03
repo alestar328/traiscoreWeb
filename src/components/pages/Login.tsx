@@ -7,8 +7,7 @@ import {doc, getDoc, getFirestore} from "firebase/firestore";
 import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
 
 function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const auth = getAuth();
@@ -44,37 +43,15 @@ function Login() {
         }
     };
 
-    const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
-        setError('Actualmente solo está habilitado el inicio de sesión con Google.');
-    };
+
 
     return (
         <div className="login-container">
             <div className="login-card">
                 <h2 className="login-title">Iniciar Sesión</h2>
 
-                <form onSubmit={handleLogin} className="login-form">
-                    <label>Correo Electrónico</label>
-                    <input
-                        type="email"
-                        placeholder="correo@ejemplo.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <label>Contraseña</label>
-                    <input
-                        type="password"
-                        placeholder="********"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <button type="submit">Iniciar Sesión</button>
-                </form>
 
-                <div className="divider">o</div>
+
 
                 <button className="btn-google" onClick={handleGoogleSignIn}>
                     <FcGoogle size={20} />

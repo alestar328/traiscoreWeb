@@ -130,7 +130,7 @@ const UserProfileForm: React.FC<Props> = ({ user }) => {
                     className={!isValid || !formTouched ? "btn-disabled" : "btn-submit"}
                     disabled={!isValid || !formTouched}
                 >
-                    Save profile
+                    Registrar
                 </button>
 
                 {!isValid && formTouched && (

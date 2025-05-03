@@ -1,0 +1,40 @@
+/* ClientCard.css */
+.client-card {
+    width: 220px;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+}
+
+.client-avatar {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.client-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-icon {
+    font-size: 60px;
+    color: #ccc;
+}
+
+.client-name {
+    margin: 0 0 0.5rem;
+    font-size: 1.2rem;
+}
+
+.client-info {
+    margin: 4px 0;
+    font-size: 0.9rem;
+}

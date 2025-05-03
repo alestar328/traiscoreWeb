@@ -5,8 +5,8 @@ import RoutineTablePrev from "../RoutineTablePrev.tsx";
 import {firestore} from "../../firebase.ts";
 import {addDoc, collection, getDocs} from "@firebase/firestore";
 import { serverTimestamp } from "firebase/firestore";
-import {initDefaultExercises} from "../../scripts/initDefaultExercises.tsx";
-import {exportRoutineToJson} from "../../scripts/UsefullFunctions.tsx";
+import {initDefaultExercises} from "../../utils/initDefaultExercises.tsx";
+import {exportRoutineToJson} from "../../utils/UsefullFunctions.tsx";
 
 function CreateRoutine() {
     type RoutineSection = {

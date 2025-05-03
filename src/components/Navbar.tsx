@@ -12,7 +12,7 @@ function Navbar() {
     const [button, setButton] = useState(true);
     const { currentUser } = useAuth();
     const navigate = useNavigate();
-
+    const role = currentUser?.userRole;
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () =>setClick(false);
 
@@ -75,6 +75,8 @@ function Navbar() {
                         </li>
                         {button && currentUser && (
                             <>
+                        {role === "trainer" && (
+                            <>
                             <li className='nav-item'>
                                 <Link to='/clientregistrationform' className='nav-links' onClick={closeMobileMenu}>
                                     Alta cliente
@@ -86,28 +88,31 @@ function Navbar() {
                                     Nueva rutina
                                 </Link>
                             </li>
+                            </>
+                        )}
 
                             <li className='nav-item'>
                                 <Button buttonStyle="btn--primary" onClick={handleDashboardRedirect}>
                                     Mi Panel
                                 </Button>
                             </li>
-
                             <li className="nav-item">
-                                <Button buttonStyle="btn--outline" onClick={handleLogout}>
+                                <Button buttonStyle="btn--outline" className="btn--logout"
+                                        onClick={handleLogout}
+                                >
                                     Cerrar Sesión
                                 </Button>
                             </li>
+
                             </>
-                            )}
+                        )}
 
-
-                        {button && !currentUser &&(
+                        {button && !currentUser && (
 
                             <li className="nav-item">
-                            <Link to="/login" className="btn-link">
-                                <Button buttonStyle="btn--outline">Inicia Sesión</Button>
-                            </Link>
+                                <Link to="/login" className="btn-link">
+                                    <Button buttonStyle="btn--outline">Inicia Sesión</Button>
+                                </Link>
                             </li>
                     )}
                     </ul>
