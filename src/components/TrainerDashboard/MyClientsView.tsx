@@ -1,17 +1,15 @@
 import ClientCard from "../ClientCard.tsx";
 import '../../styles/MyClientsView.css';
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {useAuth} from "../../contexts/AuthContext.tsx";
-import {collection, getDocs, Timestamp, QueryDocumentSnapshot, DocumentData} from "@firebase/firestore";
+import {collection, getDocs, Timestamp, QueryDocumentSnapshot, DocumentData, deleteDoc, doc} from "@firebase/firestore";
 import {db} from "../../firebase/firebaseConfig.tsx";
 import {ClientFirestoreData, ClientProfile} from "../../models/UserProfile.tsx";
-import DeleteDragButton from "../DeleteDragButton.tsx";
 
 export default function MyClientsView() {
 
     const { currentUser } = useAuth();
     const [clients, setClients] = useState<ClientProfile[]>([]);
-    const wrapperRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!currentUser) return;
@@ -70,9 +68,18 @@ export default function MyClientsView() {
 
         fetchClients();
     }, [currentUser]);
+    const handleDelete = async (uid: string) => {
+        if (!currentUser) return;
+        const ok = window.confirm("¿Estás seguro de que deseas eliminar este cliente?");
+        if (!ok) return;
 
+        const clientDoc = doc(db, "users", currentUser.uid, "clients", uid);
+        await deleteDoc(clientDoc);
+
+        setClients((prev) => prev.filter((c) => c.uid !== uid));
+    };
     return (
-        <div ref={wrapperRef} className="myclients-wrapper">
+        <div  className="myclients-wrapper">
             <h1 className="text-3xl font-bold text-center mb-8">Mis clientes</h1>
 
             <div className="ClientsContainer">
@@ -87,13 +94,11 @@ export default function MyClientsView() {
                         userPhotoURL={c.userPhotoURL}
                         userRole={c.userRole}
                         email={c.email!}
+                        onDelete={handleDelete}
                     />
                 ))}
             </div>
-            <DeleteDragButton
-                boundsRef={wrapperRef}
-                onClick={() => console.log("Eliminar pulsado")}
-            />
+
         </div>
     );
 }

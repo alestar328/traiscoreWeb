@@ -4,22 +4,36 @@ import {Button} from "./Button.tsx";
 import {ClientProfile} from "../models/UserProfile.tsx";
 import {calculateAge} from "../utils/UsefullFunctions.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-solid-svg-icons";
+import {faTrash, faUser} from "@fortawesome/free-solid-svg-icons";
 import "../../src/styles/ClientCard.css";
 
 
-const ClientCard: React.FC<ClientProfile> = ({
-                                                 uid,
-                                                 userName,
-                                                 userLastName,
-                                                 birthDate,
-                                                 gender,
-                                                 userPhotoURL,
-                                             }) => {
+interface onDelete extends ClientProfile {
+    onDelete?: (uid: string) => void;
+}
+
+const ClientCard: React.FC<onDelete> = ({
+                                         uid,
+                                         userName,
+                                         userLastName,
+                                         birthDate,
+                                         gender,
+                                         userPhotoURL,
+                                         onDelete
+                                     }) => {
     const age = birthDate ? calculateAge(birthDate) : '—';
 
     return (
         <div className="client-card">
+            {onDelete && (
+                <button
+                    className="card-delete-btn"
+                    onClick={() => onDelete(uid)}
+                    title="Eliminar cliente"
+                >
+                    <FontAwesomeIcon icon={faTrash} />
+                </button>
+            )}
             <div className="client-avatar">
                 {userPhotoURL ? (
                     <img
