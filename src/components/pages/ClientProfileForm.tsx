@@ -1,31 +1,62 @@
-import {useState, ChangeEvent, FormEvent, useEffect} from 'react';
+import {useState, ChangeEvent, FormEvent, useEffect, useRef} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faUser} from "@fortawesome/free-solid-svg-icons";
+import {faCamera, faUser} from "@fortawesome/free-solid-svg-icons";
 import "../../styles/ClientProfileForm.css";
 import {useParams} from "react-router-dom";
-import {doc, getDoc, Timestamp} from "firebase/firestore";
-import {db} from "../../firebase/firebaseConfig.tsx";
+import {doc, getDoc, Timestamp, updateDoc} from "firebase/firestore";
+import {db, storage } from "../../firebase/firebaseConfig.tsx";
 import {useAuth} from "../../contexts/AuthContext.tsx";
 import {calculateAge} from "../../utils/UsefullFunctions.tsx";
 import {ClientFirestoreData} from "../../models/UserProfile.tsx";
 import {ClientData, initialClientFormValues} from "../../utils/initialValues.tsx";
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
 function ClientProfileForm() {
     const { uid } = useParams<{ uid: string }>();
     const { currentUser } = useAuth();
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [formData, setFormData] = useState<ClientData>(initialClientFormValues);
-
+    const [photoFile, setPhotoFile] = useState<File|null>(null);
+    const [photoPreview, setPhotoPreview] = useState<string>("");
 
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
-
-    const handleSubmit = (e: FormEvent) => {
+    const handlePhotoClick = () => {
+        fileInputRef.current?.click();
+    };
+    const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0] ?? null;
+        if (!file) return;
+        setPhotoFile(file);
+        setPhotoPreview(URL.createObjectURL(file));
+    };
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
+        if (!currentUser) return;
+        const docRef = doc(db, "users", currentUser.uid, "clients", uid!);
+
         console.log('✅ Perfil guardado:', formData);
+        const updateData: Partial<ClientFirestoreData> = {
+            userName: formData.userName,
+            userLastName: formData.userLastName,
+            birthDate: new Date(formData.birthDate),
+            measurements: {
+                height: Number(formData.height),
+                weight: Number(formData.weight),
+                neck:   Number(formData.neck),
+                chest:  Number(formData.chest),
+                arms:   Number(formData.arms),
+                waist:  Number(formData.waist),
+                thigh:  Number(formData.thigh),
+                calf:   Number(formData.calf),
+            }
+
+        };
+        await updateDoc(docRef, updateData);
         const preparedData = {
             ...formData,
             age: Number(formData.age),
@@ -39,14 +70,22 @@ function ClientProfileForm() {
             calf: Number(formData.calf),
         };
 
+        if (photoFile) {
+            const path = `users/${currentUser.uid}/clients/${uid}/photo.jpg`;
+            const imgRef = storageRef(storage, path);
+            await uploadBytes(imgRef, photoFile);
+            const url = await getDownloadURL(imgRef);
+            await updateDoc(docRef, { userPhotoURL: url });
+            setFormData(prev => ({ ...prev, userPhotoURL: url }));
+        }
+
         console.log('✅ Perfil guardado (números):', preparedData);
         // Enviar preparedData a backend
     };
     useEffect(() => {
         if (!uid || !currentUser) return;
-        // Asume que currentUser.uid es el trainer; importa useAuth si hace falta
-        const fetchClient = async () => {
-            const ref = doc(db, "users", /* trainerUid */ currentUser!.uid, "clients", uid);
+        (async () => {
+            const ref = doc(db, "users", currentUser.uid, "clients", uid);
             const snap = await getDoc(ref);
             if (!snap.exists()) return;
             const data = snap.data() as ClientFirestoreData;
@@ -54,7 +93,9 @@ function ClientProfileForm() {
             const birthStr = data.birthDate? (
                     data.birthDate instanceof Timestamp? data.birthDate.toDate(): new Date(data.birthDate)).toISOString().split("T")[0] : '';
 
-            setFormData({
+            setFormData(prev => ({
+                ...prev,
+                userPhotoURL: data.userPhotoURL ?? "",
                 userName:       data.userName || "",
                 userLastName:   data.userLastName || "",
                 birthDate:     birthStr,
@@ -76,18 +117,37 @@ function ClientProfileForm() {
                 thigh:          data.measurements?.thigh   ? String(data.measurements.thigh) : "",
                 calf:           data.measurements?.calf    ? String(data.measurements.calf) : "",
 
-            });
-        };
-        fetchClient();
+            }));
+            if (data.userPhotoURL) {
+                setPhotoPreview(data.userPhotoURL);
+            }
+        })();
     }, [uid, currentUser]);
     return (
         <div className="client-profile-page">
             <div className="client-profile-wrapper">
                 <div className="profile-sidebar">
-                    <FontAwesomeIcon icon={faUser} className="profile-avatar" />
-                    <h3>@NombreUsuario</h3>
+
+
+                    <div className="photo-container" onClick={handlePhotoClick}>
+                        {photoPreview
+                            ? <img src={photoPreview} alt="Foto cliente" className="profile-avatar-img"/>
+                            : <FontAwesomeIcon icon={faUser} className="profile-avatar"/>
+                        }
+                        <div className="photo-overlay">
+                            <FontAwesomeIcon icon={faCamera}/>
+                        </div>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            accept="image/*"
+                            style={{display: "none"}}
+                            onChange={handlePhotoChange}
+                        />
+                    </div>
+                    <h3> {formData.userName || "—"}</h3>
                     <p> {formData.email || "—"}</p>
-                    <hr />
+                    <hr/>
                     <div className="profile-info">
                         <p><strong>Nombre:</strong> {formData.userName || "—"}</p>
                         <p><strong>Apellido:</strong> {formData.userLastName || "—"}</p>
@@ -105,7 +165,7 @@ function ClientProfileForm() {
                 </div>
 
                 <div className="client-form">
-                <h2>Datos del Cliente</h2>
+                    <h2>Datos del Cliente</h2>
                     <form onSubmit={handleSubmit}>
                         <input
                             type="text"
@@ -145,9 +205,9 @@ function ClientProfileForm() {
                             required
                         >
                             <option value="">Género</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Otro">Otro</option>
+                            <option value="male">Masculino</option>
+                            <option value="female">Femenino</option>
+                            <option value="other">Otro</option>
                         </select>
 
                         <div className="measurements-inputs">

@@ -73,9 +73,11 @@ function Navbar() {
                                 Contáctanos
                             </Link>
                         </li>
-                        {button && currentUser && (
+
+
+                        {currentUser ? (
                             <>
-                        {role === "trainer" && (
+                                {button && role === "trainer" && (
                             <>
                             <li className='nav-item'>
                                 <Link to='/clientregistrationform' className='nav-links' onClick={closeMobileMenu}>
@@ -90,12 +92,13 @@ function Navbar() {
                             </li>
                             </>
                         )}
-
+                                {button && (
                             <li className='nav-item'>
                                 <Button buttonStyle="btn--primary" onClick={handleDashboardRedirect}>
                                     Mi Panel
                                 </Button>
                             </li>
+                                )}
                             <li className="nav-item">
                                 <Button buttonStyle="btn--outline" className="btn--logout"
                                         onClick={handleLogout}
@@ -105,9 +108,9 @@ function Navbar() {
                             </li>
 
                             </>
-                        )}
+                        ) : (
 
-                        {button && !currentUser && (
+
 
                             <li className="nav-item">
                                 <Link to="/login" className="btn-link">
