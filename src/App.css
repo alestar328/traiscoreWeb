@@ -10,12 +10,12 @@ html, body, #root {
 }
 
 .app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* header | contenido | footer */
+    height: 100vh;
 }
 .app-content {
-    flex: 1; /* ocupa todo el espacio sobrante */
+    overflow-y: auto; /* scroll si el contenido crece */
 }
 .home,
 .services,

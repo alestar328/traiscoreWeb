@@ -1,5 +1,6 @@
 import "../../styles/ClientDashboard.css";
 import {FaChartLine, FaDumbbell, FaUser} from "react-icons/fa";
+import {Link} from "react-router-dom";
 
 function ClientDashboard() {
     return (
@@ -9,10 +10,10 @@ function ClientDashboard() {
             </header>
             <main className="dashboard-main">
                 <section className="dashboard-cards">
-                    <div className="dashboard-card">
+                    <Link to="/clientprofileboard" className="dashboard-card">
                         <FaUser className="card-icon" />
                         <h3>Mis datos</h3>
-                    </div>
+                    </Link>
 
                     <div className="dashboard-card">
                         <FaDumbbell className="card-icon" />

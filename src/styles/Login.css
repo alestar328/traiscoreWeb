@@ -1,6 +1,6 @@
 /* Estilo general del contenedor */
 .login-container {
-    height: 80vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

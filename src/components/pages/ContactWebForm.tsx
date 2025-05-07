@@ -12,8 +12,8 @@ const ContactWebForm = () => {
                     </div>
 
                     <div className="cont-group">
-                        <label htmlFor="user_email">Correo Electrónico</label>
-                        <input type="email" id="user_email" name="user_email" placeholder="tucorreo@ejemplo.com" />
+                        <label htmlFor="email">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" />
                     </div>
 
                     <div className="cont-group">

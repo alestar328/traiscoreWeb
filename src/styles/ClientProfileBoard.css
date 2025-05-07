@@ -1,0 +1,148 @@
+.client-profile-board {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr 2fr;
+    /* Define una altura mínima para la primera fila */
+    grid-template-rows: min-content 1fr; /* 'min-content' se ajusta al contenido pero no se colapsa */
+    align-items: stretch;
+    gap: 24px;
+    padding: 30px;
+    border-radius: 8px;
+    color: #f0f0f0;
+    font-family: sans-serif;
+    font-size: 1.1rem;
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 24px 16px;
+    min-height: 300px;
+    grid-row: span 2;
+}
+
+.avatar {
+    width: 250px;
+    height: 250px;
+    background: #555;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.avatar-icon {
+    font-size: 100px;
+    color: #919191;
+}
+
+.profile-info {
+    text-align: center;
+    font-size: 2rem;
+    margin: 4px 0;
+}
+
+.profile-info h2 {
+    margin: 0 0 8px;
+    /* Fuente más grande para el nombre */
+    font-size: 1.8em;
+}
+
+
+
+
+.basic-stats span {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.characteristics,
+.interests {
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.characteristics h3,
+.interests h3 {
+    margin-top: 0;
+}
+
+
+.measurements {
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 16px;
+    min-height: 250px;
+}
+
+.measurements h3 {
+    margin-top: 0;
+    color: #8e44ad;
+    font-size: 1.8rem;
+}
+
+.measurements ul {
+    margin: 8px 0 0;
+    padding-left: 1em;
+}
+
+.measurements li {
+    margin-bottom: 6px;
+    font-size: 1.5rem;
+    line-height: 2;
+    color: #f0f0f0;
+}
+.achievements-interest {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 400px;
+}
+
+.interests,
+.de-interes {
+    background: #2a2a2a;
+    border-radius: 8px;
+    padding: 16px;
+     min-height: 150px;
+}
+.interests h3,
+.de-interes h3 {
+    margin-top: 0;
+    color: #8e44ad;
+    font-size: 2.5rem;
+}
+
+.interests ul,
+.de-interes ul {
+    margin: 8px 0 0;
+    padding-left: 1em;
+
+}
+
+.interests li,
+.de-interes li {
+    margin-bottom: 6px;
+    font-size: 1.5rem;
+}
+.client-profile-board .recharge-bar-label {
+    font-size: 2.7rem;
+}
+.client-profile-board .recharge-bar-track {
+    /* opcional: barra un poco más gruesa */
+    height: 18px;
+}

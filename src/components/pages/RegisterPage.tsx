@@ -2,24 +2,31 @@
 import '../../styles/RegisterPage.css';
 import registerPic from "../../assets/register_mainpic.png";
 import { FcGoogle } from 'react-icons/fc';
-import {UserProfile} from "../../models/UserProfile.tsx";
+import {useNavigate} from "react-router-dom";
+import {useRegistration} from "../../contexts/RegistrationContext.tsx";
 import {useState} from "react";
-import UserProfileForm from "./UserProfileForm.tsx";
-import {signInWithGoogle} from "../../firebase/firebaseConfig.tsx";
+import UserProfileFormWrapper from "./UserProfileFormWrapper.tsx";
+import '../../styles/UserProfile.css';
 
 
 
 function RegisterPage() {
+    const { pendingUser, registerWithGoogle, clearPendingUser } = useRegistration();
+    const navigate = useNavigate();
+    // Nuevo estado local para controlar si el formulario de perfil debe mostrarse
+    const [showProfileForm, setShowProfileForm] = useState(false);
 
-    const [user, setUser] = useState<UserProfile | null>(null);
     const handleGoogleSignIn = async () => {
-        try {
-            const user = await signInWithGoogle();
-            setUser(user); // <-- esto carga tu formulario con datos reales
-        } catch (error) {
-            console.error("Error en login con Google:", error);
-        }
+        const ok = await registerWithGoogle();
+        if (ok) setShowProfileForm(true);
     };
+
+    // Función para volver a mostrar las opciones de registro iniciales
+    const handleGoBack = () => {
+        clearPendingUser();
+        setShowProfileForm(false);
+    };
+
     return (
         <div className="register-wrapper">
             <div className="left-panel">
@@ -30,8 +37,8 @@ function RegisterPage() {
 
             <div className="right-panel">
                 <div className="signup-card">
-                    {user ? (
-                        <UserProfileForm user={user} />
+                    {showProfileForm && pendingUser ? (
+                        <UserProfileFormWrapper onGoBack={handleGoBack} />
                     ) : (
                         <>
                             <h2>Regístrate ahora</h2>
@@ -44,7 +51,7 @@ function RegisterPage() {
                                 By signing up, you agree to our <a href="#">Terms of use</a> and <a href="#">Privacy Policy</a>.
                             </p>
 
-                            <button className="btn-secondary-login">
+                            <button className="btn-secondary-login" onClick={() => navigate('/login')}>
                                 ¿Ya tienes cuenta? Entra
                             </button>
                         </>

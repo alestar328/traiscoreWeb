@@ -1,19 +1,17 @@
 .register-wrapper {
     display: flex;
-    height: 80vh;
+    height: auto;
     font-family: 'Segoe UI', sans-serif;
 }
 
 /* Left side */
 .left-panel {
     flex: 1;
-    background-color: #1a1a1a;
-    color: white;
+    min-height: 0;            /* permite que su hijo haga scroll o encaje */
     display: flex;
-    align-items: start;       /* Cambiado de center a start */
+    align-items: center;      /* centra verticalmente la imagen */
     justify-content: center;
-    padding: 60px 60px 40px;  /* Añadimos padding-top más alto para "subir" */
-    position: relative;
+    background-color: #1a1a1a;
 }
 
 .left-content {
@@ -22,10 +20,15 @@
 }
 
 .left-content img {
-    width: 100%;
-    max-width: 450px;           /* Aumentado de 300px */
-    border-radius: 20px;        /* Bordes redondeados */
+    display: block;
+    max-width: 100%;          /* nunca más ancho que el contenedor */
+    max-height: 80vh;         /* nunca más alto que el 80% del viewport */
+    width: auto;              /* mantiene proporción */
+    height: auto;
+    object-fit: contain;      /* rellena sin recortar */
+    border-radius: 20px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    margin: 0 auto;           /* centrado horizontal si sobra espacio */
 }
 
 /* Right side */

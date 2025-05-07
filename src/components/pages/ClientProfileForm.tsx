@@ -43,6 +43,8 @@ function ClientProfileForm() {
         const updateData: Partial<ClientFirestoreData> = {
             userName: formData.userName,
             userLastName: formData.userLastName,
+            email: formData.email ,
+
             birthDate: new Date(formData.birthDate),
             measurements: {
                 height: Number(formData.height),
