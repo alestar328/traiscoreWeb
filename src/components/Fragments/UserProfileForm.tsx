@@ -18,7 +18,7 @@ export const UserProfileForm: React.FC<Props> = ({onGoBack, formData,
                                                      onChange, onRoleSelect,
                                                      onSubmit
 }) => (
-    <div>
+    <>
         <h2>Complete your profile</h2>
         {onGoBack && <button type="button" onClick={onGoBack}>Volver</button>} {/* Botón opcional */}
 
@@ -58,5 +58,5 @@ export const UserProfileForm: React.FC<Props> = ({onGoBack, formData,
                     disabled={!isValid || !formTouched}>{formTouched ? 'Registrar' : '...'}</button>
             {!isValid && formTouched && <p>Completa todos los campos correctamente</p>}
         </form>
-    </div>
+    </>
 );

@@ -43,16 +43,21 @@
 
 .signup-card {
     background-color: white;
-    padding: 40px 30px;
+    padding: 20px 15px;
     border-radius: 16px;
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;    /* antes 400px: ahora más ancho */
     box-shadow: 0 0 10px rgba(0,0,0,0.05);
+
+    /* opcional: para que la altura crezca sólo al contenido */
+    height: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .signup-card h2 {
-    font-size: 22px;
-    margin-bottom: 20px;
+    font-size: 15px;
+    margin-bottom: 12px;
 }
 
 .form-row {

@@ -10,7 +10,9 @@ import {RegClientForm} from "../Fragments/RegClientForm.tsx";
 
 
 type Step = "base" | "client";
-export default function UserProfileFormWrapper() {
+export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => void }  ) {
+
+
     const navigate = useNavigate();
     const { pendingUser } = useRegistration();
     const [step, setStep] = useState<Step>("base");
@@ -164,6 +166,7 @@ export default function UserProfileFormWrapper() {
                     onChange={handleBaseChange}
                     onRoleSelect={handleRoleSelect}
                     onSubmit={handleBaseSubmit}
+                    onGoBack={onGoBack}
                 />
             )}
             {step === "client" && (
