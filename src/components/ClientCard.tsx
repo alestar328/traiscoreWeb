@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {Button} from "./Button.tsx";
-import {ClientProfile} from "../models/UserProfile.tsx";
+import {ClientProfile} from "../models/UserEntity.tsx";
 import {calculateAge} from "../utils/UsefullFunctions.tsx";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash, faUser} from "@fortawesome/free-solid-svg-icons";

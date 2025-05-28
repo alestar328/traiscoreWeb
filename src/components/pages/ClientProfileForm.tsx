@@ -7,7 +7,7 @@ import {doc, getDoc, Timestamp, updateDoc} from "firebase/firestore";
 import {db, storage } from "../../firebase/firebaseConfig.tsx";
 import {useAuth} from "../../contexts/AuthContext.tsx";
 import {calculateAge} from "../../utils/UsefullFunctions.tsx";
-import {ClientFirestoreData} from "../../models/UserProfile.tsx";
+import {UserEntity} from "../../models/UserEntity.tsx";
 import {ClientData, initialClientFormValues} from "../../utils/initialValues.tsx";
 import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -40,9 +40,9 @@ function ClientProfileForm() {
         const docRef = doc(db, "users", currentUser.uid, "clients", uid!);
 
         console.log('✅ Perfil guardado:', formData);
-        const updateData: Partial<ClientFirestoreData> = {
-            userName: formData.userName,
-            userLastName: formData.userLastName,
+        const updateData: Partial<UserEntity> = {
+            firstName: formData.userName,
+            lastName: formData.userLastName,
             email: formData.email ,
 
             birthDate: new Date(formData.birthDate),
@@ -90,7 +90,7 @@ function ClientProfileForm() {
             const ref = doc(db, "users", currentUser.uid, "clients", uid);
             const snap = await getDoc(ref);
             if (!snap.exists()) return;
-            const data = snap.data() as ClientFirestoreData;
+            const data = snap.data() as UserEntity;
 
             const birthStr = data.birthDate? (
                     data.birthDate instanceof Timestamp? data.birthDate.toDate(): new Date(data.birthDate)).toISOString().split("T")[0] : '';
@@ -98,8 +98,8 @@ function ClientProfileForm() {
             setFormData(prev => ({
                 ...prev,
                 userPhotoURL: data.userPhotoURL ?? "",
-                userName:       data.userName || "",
-                userLastName:   data.userLastName || "",
+                userName:       data.firstName || "",
+                userLastName:   data.lastName || "",
                 birthDate:     birthStr,
                 email: data.email || "",
                 age: data.birthDate

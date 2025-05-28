@@ -16,6 +16,8 @@ import ContactWebForm from "./components/pages/ContactWebForm.tsx";
 import ClientRegistrationForm from "./components/TrainerDashboard/ClientRegistrationForm.tsx";
 import ClientProfileBoard from "./components/ClientDashboard/ClientProfileBoard.tsx";
 import UserProfileFormWrapper from "./components/pages/UserProfileFormWrapper.tsx";
+import AuthDebugComponent from "./contexts/AuthDebugComponent.tsx";
+import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
 
 function App() {
   return (
@@ -31,12 +33,14 @@ function App() {
                           <Route path="/register/profile" element={<UserProfileFormWrapper/>} />
                           <Route path='/createRoutine' element={<CreateRoutine/>}/>
                           <Route path='/myclients' element={<MyClientsView/>}/>
+                          <Route path='/authdebug' element={<AuthDebugComponent/>}/>
                           <Route path='/clientprofile/:uid' element={<ClientProfileForm/>}/>
                           <Route path='/trainerdashboard' element={<TrainerDashboard/>}/>
                           <Route path='/clientdashboard' element={<ClientDashboard/>}/>
                           <Route path='/contactwebform' element={<ContactWebForm/>}/>
                           <Route path='/clientregistrationform' element={<ClientRegistrationForm/>}/>
                           <Route path='/clientprofileboard' element={<ClientProfileBoard/>}/>
+                          <Route path='/progressdashboard' element={<ProgressDashboard/>}/>
                       </Routes>
                   </div>
                   <FooterComp/>

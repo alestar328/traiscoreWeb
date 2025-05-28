@@ -1,11 +1,12 @@
-import {UserProfile} from "../models/UserProfile.tsx";
+import {UserEntity} from "../models/UserEntity.tsx";
 import {createContext, ReactNode, useContext, useState} from "react";
 import {getAuth, GoogleAuthProvider, signInWithPopup, User as FirebaseUser} from "firebase/auth";
 import {doc, getDoc, getFirestore} from "firebase/firestore";
+import {Timestamp} from "@firebase/firestore";
 
 
 interface RegistrationContextType {
-    pendingUser: Partial<UserProfile> | null;
+    pendingUser: Partial<UserEntity> | null;
     registerWithGoogle: () => Promise<boolean>;
     clearPendingUser: () => void;
 }
@@ -19,7 +20,7 @@ const RegistrationContext = createContext<RegistrationContextType>({
 export const useRegistration = () => useContext(RegistrationContext);
 
 export const RegistrationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [pendingUser, setPendingUser] = useState<Partial<UserProfile> | null>(null);
+    const [pendingUser, setPendingUser] = useState<Partial<UserEntity> | null>(null);
 
     const registerWithGoogle = async (): Promise<boolean> => {
         const auth = getAuth();
@@ -46,11 +47,11 @@ export const RegistrationProvider: React.FC<{ children: ReactNode }> = ({ childr
             setPendingUser({
                 uid: fbUser.uid,
                 email: fbUser.email,
-                userName: firstName,
-                userLastName: lastName,
-                userPhotoURL: fbUser.photoURL ?? undefined,
+                firstName: firstName,
+                lastName: lastName,
+                photoURL: fbUser.photoURL ?? undefined,
                 userRole: "CLIENT",
-                createdAt: new Date(),
+                createdAt: Timestamp.now()
             });
 
             return true;

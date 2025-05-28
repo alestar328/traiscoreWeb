@@ -1,7 +1,7 @@
 import {useRegistration} from "../../contexts/RegistrationContext.tsx";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {UserProfile, UserRole} from "../../models/UserProfile.tsx";
+import {UserEntity, UserRole} from "../../models/UserEntity.tsx";
 import {doc, setDoc} from "firebase/firestore";
 import {db} from "../../firebase/firebaseConfig.tsx";
 import {UserProfileForm} from "../Fragments/UserProfileForm.tsx";
@@ -119,7 +119,7 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
     };
     const persistTrainer = async () => {
         if (!pendingUser?.uid) return;
-        const profile: UserProfile = {
+        const profile: UserEntity = {
             ...pendingUser,
             uid: pendingUser.uid,
             email: formData.email,

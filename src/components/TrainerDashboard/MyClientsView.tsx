@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {useAuth} from "../../contexts/AuthContext.tsx";
 import {collection, getDocs, Timestamp, QueryDocumentSnapshot, DocumentData, deleteDoc, doc} from "@firebase/firestore";
 import {db} from "../../firebase/firebaseConfig.tsx";
-import {ClientFirestoreData, ClientProfile} from "../../models/UserProfile.tsx";
+import {UserEntity, ClientProfile} from "../../models/UserEntity.tsx";
 
 export default function MyClientsView() {
 
@@ -20,7 +20,7 @@ export default function MyClientsView() {
 
             const list = snapshot.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
                 // Forzamos el tipo de data a nuestro interface
-                const data = doc.data() as ClientFirestoreData;
+                const data = doc.data() as UserEntity;
 
                 // Convertir birthDate
                 let birth: Date | undefined;
@@ -46,8 +46,8 @@ export default function MyClientsView() {
 
                 return {
                     uid: doc.id,
-                    userName: data.userName,
-                    userLastName: data.userLastName,
+                    userName: data.firstName,
+                    userLastName: data.lastName,
                     email: data.email,
                     birthDate: birth,
                     registrationDate: registration,

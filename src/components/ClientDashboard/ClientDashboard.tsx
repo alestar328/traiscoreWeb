@@ -20,10 +20,14 @@ function ClientDashboard() {
                         <h3>Mis rutinas</h3>
                     </div>
 
-                    <div className="dashboard-card">
+
+
+                    <Link to="/progressdashboard" className="dashboard-card">
                         <FaChartLine className="card-icon" />
                         <h3>Mi progreso</h3>
-                    </div>
+                    </Link>
+
+
                 </section>
             </main>
         </div>

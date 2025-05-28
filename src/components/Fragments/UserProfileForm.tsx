@@ -1,4 +1,4 @@
-import { UserRole} from "../../models/UserProfile.tsx";
+import { UserRole} from "../../models/UserEntity.tsx";
 
 
 interface Props {
