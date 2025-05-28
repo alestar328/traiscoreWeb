@@ -9,7 +9,7 @@ import {RegClientFormData} from "../../models/UtilsInterfaces.tsx";
 import {RegClientForm} from "../Fragments/RegClientForm.tsx";
 
 
-type Step = "base" | "client";
+type Step = "base" | "CLIENT";
 export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => void }  ) {
 
 
@@ -22,7 +22,7 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
         userLastName: pendingUser?.userLastName || '',
         email:       pendingUser?.email || '',
         birthDate:   pendingUser?.birthDate?.toISOString().split('T')[0] ?? '',
-        userRole:    pendingUser?.userRole || 'client' as UserRole,
+        userRole:    pendingUser?.userRole || 'CLIENT' as UserRole,
     });
     const [loading, setLoading] = useState(true);
     const [baseTouched, setBaseTouched] = useState(false);
@@ -52,7 +52,7 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
             birthDate:    pendingUser.birthDate
                 ? pendingUser.birthDate.toISOString().split("T")[0]
                 : "",
-            userRole:     pendingUser.userRole    ?? "client",
+            userRole:     pendingUser.userRole    ?? "CLIENT",
         });
         setLoading(false);
     }, [pendingUser, navigate]);
@@ -65,7 +65,7 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
             userLastName.trim() !== "" &&
             emailRx.test(email) &&
             birthDate.trim() !== "" &&
-            (userRole === "client" || userRole === "trainer")
+            (userRole === "CLIENT" || userRole === "TRAINER")
         );
     }, [formData]);
 
@@ -110,8 +110,8 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
         if (!window.confirm("¿Deseas terminar de registrarle?")) return;
 
         // Si es CLIENT, pasamos al siguiente paso
-        if (formData.userRole === "client") {
-            setStep("client");
+        if (formData.userRole === "CLIENT") {
+            setStep("CLIENT");
         } else {
             // Si es TRAINER, guardamos y navegamos ya
             persistTrainer();
@@ -142,7 +142,7 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
             userName: formData.userName,
             userLastName: formData.userLastName,
             birthDate: new Date(formData.birthDate),
-            userRole: "client" as UserRole,
+            userRole: "CLIENT" as UserRole,
             gender:   clientData.gender,
             measurements: clientData.measurements,
             phone:    clientData.phone,
@@ -169,7 +169,7 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
                     onGoBack={onGoBack}
                 />
             )}
-            {step === "client" && (
+            {step === "CLIENT" && (
                 <RegClientForm
                     formData={clientData}
                     isValid={clientValid}

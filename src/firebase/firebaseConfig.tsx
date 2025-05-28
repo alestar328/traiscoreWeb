@@ -38,7 +38,7 @@ export const signInWithGoogle = async (): Promise<UserProfile> => {
         userLastName: fullName.slice(1).join(' ') || '',
         email: googleUser.email || '',
         userPhotoURL: googleUser.photoURL || '',
-        userRole: 'client', // Default: 'client'
+        userRole: 'CLIENT', // Default: 'client'
         createdAt: new Date(),
     };
 

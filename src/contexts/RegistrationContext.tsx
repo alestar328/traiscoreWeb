@@ -49,7 +49,7 @@ export const RegistrationProvider: React.FC<{ children: ReactNode }> = ({ childr
                 userName: firstName,
                 userLastName: lastName,
                 userPhotoURL: fbUser.photoURL ?? undefined,
-                userRole: "client",
+                userRole: "CLIENT",
                 createdAt: new Date(),
             });
 

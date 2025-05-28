@@ -5,6 +5,8 @@ import RechargeBar from "../elements/RechargeBar.tsx";
 import {ClientProfile} from "../../models/UserProfile.tsx";
 import "../../styles/ClientProfileBoard.css";
 import {FaUser} from "react-icons/fa";
+
+
 const client: ClientProfile = {
     uid: 'abc123',
     email: 'cliente@fitapp.com',
@@ -12,10 +14,10 @@ const client: ClientProfile = {
     userLastName: 'Pérez',
     userPhotoURL: '', // URL de la foto
     birthDate: new Date('1993-07-22'),
-    userRole: 'client',
+    userRole: 'CLIENT',
     createdAt: new Date('2022-01-15'),
     linkedTrainerUid: 'trainer456',
-    gender: 'male',
+    gender: 'MALE',
     measurements: {
         heightCm: 175,
         weightKg: 72,

@@ -10,7 +10,7 @@ export interface ClientMeasurements {
 }
 
 export interface RegClientFormData {
-    gender: "" | "male" | "female" | "other";
+    gender: "" | "MALE" | "FEMALE" | "OTHER";
     phone: string;
     address: string;
     measurements: ClientMeasurements;

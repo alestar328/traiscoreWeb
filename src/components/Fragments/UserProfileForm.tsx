@@ -41,15 +41,15 @@ export const UserProfileForm: React.FC<Props> = ({onGoBack, formData,
             <div className="role-buttons">
                 <button
                     type="button"
-                    className={`btn-role trainer ${formData.userRole === 'trainer' ? 'active' : ''}`}
-                    onClick={() => onRoleSelect('trainer')}
+                    className={`btn-role trainer ${formData.userRole === 'TRAINER' ? 'active' : ''}`}
+                    onClick={() => onRoleSelect('TRAINER')}
                 >
                     Entrenador
                 </button>
                 <button
                     type="button"
-                    className={`btn-role athlete ${formData.userRole === 'client' ? 'active' : ''}`}
-                    onClick={() => onRoleSelect('client')}
+                    className={`btn-role athlete ${formData.userRole === 'CLIENT' ? 'active' : ''}`}
+                    onClick={() => onRoleSelect('CLIENT')}
                 >
                     Atleta
                 </button>

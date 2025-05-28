@@ -59,7 +59,7 @@ export default function MyClientsView() {
                         data.createdAt instanceof Timestamp
                             ? data.createdAt.toDate()
                             : (data.createdAt as Date | undefined),
-                    userRole: 'client'
+                    userRole: 'CLIENT'
                 } as ClientProfile;
             });
 

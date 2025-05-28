@@ -36,9 +36,9 @@ function Navbar() {
     const handleDashboardRedirect = () => {
         if (!currentUser) return;
         const role = currentUser.userRole;
-        if (role === "trainer") {
+        if (role === "TRAINER") {
             navigate("/trainerdashboard");
-        } else if (role === "client") {
+        } else if (role === "CLIENT") {
             navigate("/clientdashboard");
         }
     };
@@ -77,7 +77,7 @@ function Navbar() {
 
                         {currentUser ? (
                             <>
-                                {button && role === "trainer" && (
+                                {button && role === "TRAINER" && (
                             <>
                             <li className='nav-item'>
                                 <Link to='/clientregistrationform' className='nav-links' onClick={closeMobileMenu}>

@@ -28,10 +28,12 @@ function Login() {
                 const userData = userDoc.data();
                 const role = userData.userRole;
 
-                if (role === 'trainer') {
+                if (role === 'TRAINER') {
                     navigate('/trainerdashboard');
-                } else {
+                } else if (role === 'CLIENT') {
                     navigate('/clientdashboard');
+                }else {
+                    navigate('/')
                 }
             } else {
                 setError('❌ Tu cuenta de Google no está registrada en nuestra base de datos.');
