@@ -1,9 +1,19 @@
 import {BodyStats, UserEntity} from "../../models/UserEntity.tsx";
 import "../../styles/ClientProfileBoard.css";
-import {FaUser, FaArrowUp, FaWeight, FaRulerHorizontal, FaHeart, FaDumbbell, FaRuler, FaRunning} from "react-icons/fa";
+import {
+    FaUser,
+    FaArrowUp,
+    FaWeight,
+    FaRulerHorizontal,
+    FaHeart,
+    FaDumbbell,
+    FaRuler,
+    FaRunning,
+    FaArrowLeft, FaHistory
+} from "react-icons/fa";
 import {useAuth} from "../../contexts/AuthContext.tsx";
 import {JSX, useEffect, useState} from "react";
-import {doc, getDoc, collection, getDocs, query, orderBy, limit, Timestamp} from "firebase/firestore";
+import {doc, getDoc, collection, getDocs, query, orderBy,  Timestamp} from "firebase/firestore";
 import {db} from "../../firebase/firebaseConfig.tsx";
 
 interface LoadingState {
@@ -15,6 +25,8 @@ const ClientProfileBoard: React.FC = () => {
     const { currentUser, state: authState } = useAuth();
     const [client, setClient] = useState<UserEntity | null>(null);
     const [bodyStats, setBodyStats] = useState<BodyStats | null>(null);
+    const [bodyStatsHistory, setBodyStatsHistory] = useState<BodyStats[]>([]);
+    const [showHistory, setShowHistory] = useState(false);
     const [state, setState] = useState<LoadingState>({
         loading: true,
         error: null
@@ -54,42 +66,45 @@ const ClientProfileBoard: React.FC = () => {
                     const clientData = clientSnap.data() as UserEntity;
                     setClient(clientData);
 
-                    // 2. Cargar medidas corporales más recientes desde bodyStats
+                    // 2. Cargar medidas corporales - TODAS para el historial
                     try {
                         const bodyStatsRef = collection(db, "users", currentUser.uid, "bodyStats");
                         const bodyStatsQuery = query(
                             bodyStatsRef,
-                            orderBy("createdAt", "desc"),
-                            limit(1)
+                            orderBy("createdAt", "desc")
                         );
 
                         const bodyStatsSnap = await getDocs(bodyStatsQuery);
 
                         if (!bodyStatsSnap.empty) {
-                            const rawBodyStats = bodyStatsSnap.docs[0].data();
+                            const allBodyStats: BodyStats[] = bodyStatsSnap.docs.map(doc => {
+                                const rawBodyStats = doc.data();
+                                return {
+                                    userId: doc.id,
+                                    height: parseFloat(rawBodyStats.measurements?.Height || '0') || 0,
+                                    weight: parseFloat(rawBodyStats.measurements?.Weight || '0') || 0,
+                                    neck: parseFloat(rawBodyStats.measurements?.Neck || '0') || 0,
+                                    chest: parseFloat(rawBodyStats.measurements?.Chest || '0') || 0,
+                                    arms: parseFloat(rawBodyStats.measurements?.Arms || '0') || 0,
+                                    waist: parseFloat(rawBodyStats.measurements?.Waist || '0') || 0,
+                                    thigh: parseFloat(rawBodyStats.measurements?.Thigh || '0') || 0,
+                                    calf: parseFloat(rawBodyStats.measurements?.Calf || '0') || 0,
+                                    measurementDate: rawBodyStats.createdAt || rawBodyStats.updatedAt || Timestamp.now(),
+                                    createdAt: rawBodyStats.createdAt,
+                                    updatedAt: rawBodyStats.updatedAt
+                                };
+                            });
 
-                            const convertedBodyStats: BodyStats = {
-                                userId: bodyStatsSnap.docs[0].id,
-                                height: parseFloat(rawBodyStats.measurements?.Height || '0') || 0,
-                                weight: parseFloat(rawBodyStats.measurements?.Weight || '0') || 0,
-                                neck: parseFloat(rawBodyStats.measurements?.Neck || '0') || 0,
-                                chest: parseFloat(rawBodyStats.measurements?.Chest || '0') || 0,
-                                arms: parseFloat(rawBodyStats.measurements?.Arms || '0') || 0,
-                                waist: parseFloat(rawBodyStats.measurements?.Waist || '0') || 0,
-                                thigh: parseFloat(rawBodyStats.measurements?.Thigh || '0') || 0,
-                                calf: parseFloat(rawBodyStats.measurements?.Calf || '0') || 0,
-                                measurementDate: rawBodyStats.createdAt || rawBodyStats.updatedAt || Timestamp.now(),
-                                createdAt: rawBodyStats.createdAt,
-                                updatedAt: rawBodyStats.updatedAt
-                            };
-
-                            setBodyStats(convertedBodyStats);
+                            setBodyStatsHistory(allBodyStats);
+                            setBodyStats(allBodyStats[0] || null); // El más reciente
                         } else {
                             setBodyStats(null);
+                            setBodyStatsHistory([]);
                         }
                     } catch (bodyStatsError) {
                         console.error('Error cargando bodyStats:', bodyStatsError);
                         setBodyStats(null);
+                        setBodyStatsHistory([]);
                     }
 
                     setState({ loading: false, error: null });
@@ -167,6 +182,73 @@ const ClientProfileBoard: React.FC = () => {
         return iconMap[measurement] || <FaRuler />;
     };
 
+    // Función para renderizar una entrada de medidas
+    const renderMeasurements = (stats: BodyStats, isHistorical: boolean = false) => (
+        <div className={`measurement-entry ${isHistorical ? 'historical' : 'current'}`}>
+            {isHistorical && (
+                <div className="measurement-date">
+                    {formatDate(stats.measurementDate)}
+                </div>
+            )}
+            <ul>
+                {stats.height > 0 && (
+                    <li>
+                        <div className="measurement-icon">
+                            {getMeasurementIcon('height')}
+                        </div>
+                        <span className="measurement-label">Altura</span>
+                        <span className="measurement-value">{stats.height} cm</span>
+                    </li>
+                )}
+                {stats.weight > 0 && (
+                    <li>
+                        <div className="measurement-icon">
+                            {getMeasurementIcon('weight')}
+                        </div>
+                        <span className="measurement-label">Peso</span>
+                        <span className="measurement-value">{stats.weight} kg</span>
+                    </li>
+                )}
+                {stats.waist > 0 && (
+                    <li>
+                        <div className="measurement-icon">
+                            {getMeasurementIcon('waist')}
+                        </div>
+                        <span className="measurement-label">Cintura</span>
+                        <span className="measurement-value">{stats.waist} cm</span>
+                    </li>
+                )}
+                {stats.chest > 0 && (
+                    <li>
+                        <div className="measurement-icon">
+                            {getMeasurementIcon('chest')}
+                        </div>
+                        <span className="measurement-label">Pecho</span>
+                        <span className="measurement-value">{stats.chest} cm</span>
+                    </li>
+                )}
+                {stats.arms > 0 && (
+                    <li>
+                        <div className="measurement-icon">
+                            {getMeasurementIcon('arms')}
+                        </div>
+                        <span className="measurement-label">Brazos</span>
+                        <span className="measurement-value">{stats.arms} cm</span>
+                    </li>
+                )}
+                {stats.thigh > 0 && (
+                    <li>
+                        <div className="measurement-icon">
+                            {getMeasurementIcon('thigh')}
+                        </div>
+                        <span className="measurement-label">Muslos</span>
+                        <span className="measurement-value">{stats.thigh} cm</span>
+                    </li>
+                )}
+            </ul>
+        </div>
+    );
+
     // Mostrar loading mientras se autentica
     if (authState.loading) {
         return (
@@ -234,75 +316,57 @@ const ClientProfileBoard: React.FC = () => {
 
             {/* Tarjeta de medidas corporales */}
             <div className="measurements">
-                <h3>Medidas Corporales</h3>
-                {bodyStats ? (
-                    <>
-                        <div>
-                            Última actualización: {formatDate(bodyStats.measurementDate)}
-                        </div>
-                        <ul>
-                            {bodyStats.height > 0 && (
-                                <li>
-                                    <div className="measurement-icon">
-                                        {getMeasurementIcon('height')}
-                                    </div>
-                                    <span className="measurement-label">Altura</span>
-                                    <span className="measurement-value">{bodyStats.height} cm</span>
-                                </li>
+                <div className="measurements-header">
+                    <h3>{showHistory ? 'Historial de Medidas' : 'Medidas Corporales'}</h3>
+                    {bodyStatsHistory.length > 1 && (
+                        <button
+                            className="history-toggle-btn"
+                            onClick={() => setShowHistory(!showHistory)}
+                        >
+                            {showHistory ? (
+                                <>
+                                    <FaArrowLeft /> Volver
+                                </>
+                            ) : (
+                                <>
+                                    <FaHistory /> Ver Historial ({bodyStatsHistory.length})
+                                </>
                             )}
-                            {bodyStats.weight > 0 && (
-                                <li>
-                                    <div className="measurement-icon">
-                                        {getMeasurementIcon('weight')}
+                        </button>
+                    )}
+                </div>
+
+                {showHistory ? (
+                    // Vista de historial
+                    <div className="history-view">
+                        {bodyStatsHistory.length > 0 ? (
+                            <div className="history-list">
+                                {bodyStatsHistory.map((stats, index) => (
+                                    <div key={index} className="history-item">
+                                        {renderMeasurements(stats, true)}
                                     </div>
-                                    <span className="measurement-label">Peso</span>
-                                    <span className="measurement-value">{bodyStats.weight} kg</span>
-                                </li>
-                            )}
-                            {bodyStats.waist > 0 && (
-                                <li>
-                                    <div className="measurement-icon">
-                                        {getMeasurementIcon('waist')}
-                                    </div>
-                                    <span className="measurement-label">Cintura</span>
-                                    <span className="measurement-value">{bodyStats.waist} cm</span>
-                                </li>
-                            )}
-                            {bodyStats.chest > 0 && (
-                                <li>
-                                    <div className="measurement-icon">
-                                        {getMeasurementIcon('chest')}
-                                    </div>
-                                    <span className="measurement-label">Pecho</span>
-                                    <span className="measurement-value">{bodyStats.chest} cm</span>
-                                </li>
-                            )}
-                            {bodyStats.arms > 0 && (
-                                <li>
-                                    <div className="measurement-icon">
-                                        {getMeasurementIcon('arms')}
-                                    </div>
-                                    <span className="measurement-label">Brazos</span>
-                                    <span className="measurement-value">{bodyStats.arms} cm</span>
-                                </li>
-                            )}
-                            {bodyStats.thigh > 0 && (
-                                <li>
-                                    <div className="measurement-icon">
-                                        {getMeasurementIcon('thigh')}
-                                    </div>
-                                    <span className="measurement-label">Muslos</span>
-                                    <span className="measurement-value">{bodyStats.thigh} cm</span>
-                                </li>
-                            )}
-                        </ul>
-                    </>
+                                ))}
+                            </div>
+                        ) : (
+                            <p>No hay registros históricos</p>
+                        )}
+                    </div>
                 ) : (
-                    <p>No hay medidas registradas</p>
+                    // Vista actual
+                    <div className="current-view">
+                        {bodyStats ? (
+                            <>
+                                <div>
+                                    Última actualización: {formatDate(bodyStats.measurementDate)}
+                                </div>
+                                {renderMeasurements(bodyStats)}
+                            </>
+                        ) : (
+                            <p>No hay medidas registradas</p>
+                        )}
+                    </div>
                 )}
             </div>
-
-
         </div>
     );
 };

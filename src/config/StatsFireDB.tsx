@@ -18,15 +18,15 @@ export interface WorkoutEntry {
     reps: number;
     rir?: number;
     type: string;
-    timestamp: Timestamp;
+    timestamp: Timestamp; // ✅ Usar Timestamp en lugar de genérico
 }
+
 export interface Exercise {
     name: string;        // Para mostrar en el select
     category: string;    // Para identificar/agrupar
     createdBy?: string;  // Opcional
     isDefault?: boolean; // Opcional
 }
-
 
 // Función para obtener todas las workoutEntries de un usuario
 export const getWorkoutEntries = async (userId: string): Promise<WorkoutEntry[]> => {
@@ -39,9 +39,17 @@ export const getWorkoutEntries = async (userId: string): Promise<WorkoutEntry[]>
 
         const entries: WorkoutEntry[] = [];
         snapshot.forEach((doc) => {
+            const data = doc.data();
             entries.push({
                 id: doc.id,
-                ...doc.data() as Omit<WorkoutEntry, 'id'>
+                exerciseId: data.exerciseId || 0,
+                title: data.title || '',
+                weight: typeof data.weight === 'number' ? data.weight : 0,
+                series: typeof data.series === 'number' ? data.series : 0,
+                reps: typeof data.reps === 'number' ? data.reps : 0,
+                rir: typeof data.rir === 'number' ? data.rir : 0,
+                type: data.type || '',
+                timestamp: data.timestamp as Timestamp // ✅ Cast explícito a Timestamp
             });
         });
 
@@ -69,9 +77,17 @@ export const getWorkoutEntriesByExercise = async (userId: string, exerciseTitle:
 
         const entries: WorkoutEntry[] = [];
         snapshot.forEach((doc) => {
+            const data = doc.data();
             entries.push({
                 id: doc.id,
-                ...doc.data() as Omit<WorkoutEntry, 'id'>
+                exerciseId: data.exerciseId || 0,
+                title: data.title || '',
+                weight: typeof data.weight === 'number' ? data.weight : 0,
+                series: typeof data.series === 'number' ? data.series : 0,
+                reps: typeof data.reps === 'number' ? data.reps : 0,
+                rir: typeof data.rir === 'number' ? data.rir : 0,
+                type: data.type || '',
+                timestamp: data.timestamp as Timestamp
             });
         });
 
@@ -95,8 +111,12 @@ export const getExercises = async (): Promise<Exercise[]> => {
 
         const exercises: Exercise[] = [];
         snapshot.forEach((doc) => {
+            const data = doc.data();
             exercises.push({
-                ...doc.data() as Exercise
+                name: data.name || '',
+                category: data.category || '',
+                createdBy: data.createdBy,
+                isDefault: data.isDefault
             });
         });
 

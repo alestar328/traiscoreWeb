@@ -18,6 +18,8 @@ import ClientProfileBoard from "./components/ClientDashboard/ClientProfileBoard.
 import UserProfileFormWrapper from "./components/pages/UserProfileFormWrapper.tsx";
 import AuthDebugComponent from "./contexts/AuthDebugComponent.tsx";
 import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
+import ClientRoutines from "./components/ClientDashboard/ClientRoutines.tsx";
+import ClientStats from "./components/pages/ClientStats.tsx";
 
 function App() {
   return (
@@ -41,6 +43,9 @@ function App() {
                           <Route path='/clientregistrationform' element={<ClientRegistrationForm/>}/>
                           <Route path='/clientprofileboard' element={<ClientProfileBoard/>}/>
                           <Route path='/progressdashboard' element={<ProgressDashboard/>}/>
+                          <Route path='/clientroutines' element={<ClientRoutines/>}/>
+                          <Route path='/clientstats' element={<ClientStats/>}/>
+
                       </Routes>
                   </div>
                   <FooterComp/>

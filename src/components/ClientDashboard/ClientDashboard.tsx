@@ -15,10 +15,11 @@ function ClientDashboard() {
                         <h3>Mis datos</h3>
                     </Link>
 
-                    <div className="dashboard-card">
+
+                    <Link to="/clientroutines" className="dashboard-card">
                         <FaDumbbell className="card-icon" />
                         <h3>Mis rutinas</h3>
-                    </div>
+                    </Link>
 
 
 

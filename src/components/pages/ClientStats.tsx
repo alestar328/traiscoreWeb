@@ -1,8 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import { Search, ChevronDown } from 'lucide-react';
+import { Search, ChevronDown, ArrowLeft, TrendingUp } from 'lucide-react';
 import {getExercisesWithCategories, getUserExerciseList, calculateExerciseStats} from "../../domain/StatsDomain.tsx";
 import {useAuth} from "../../contexts/AuthContext.tsx";
 import {Exercise} from "../../config/StatsFireDB.tsx";
+import "../../styles/ClientStats.css";
+import {useParams, useNavigate} from "react-router-dom";
+import { FaArrowLeft, FaHistory, FaDumbbell } from 'react-icons/fa';
+
 import {
     BodyMeasurementType,
     getBodyMeasurementProgressData, getChartDataForMeasurement, MEASUREMENT_INFO,
@@ -43,22 +47,26 @@ interface LineChartProps {
 
 type TabType = 'records' | 'measurements';
 
-const ProgressDashboard: React.FC = () => {
+const ClientStats: React.FC = () => {
+    const { uid: clientId } = useParams<{ uid: string }>();
+    const { currentUser } = useAuth();
+    const navigate = useNavigate();
+
     const [activeTab, setActiveTab] = useState<TabType>('records');
     const [selectedMeasurement, setSelectedMeasurement] = useState<BodyMeasurementType | string>('waist');
     const [selectedExercise, setSelectedExercise] = useState<string>('');
-    const { currentUser} = useAuth();
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const [userExercises, setUserExercises] = useState<string[]>([]);
     const [exerciseStats, setExerciseStats] = useState<ExerciseData | null>(null);
     const [isLoadingStats, setIsLoadingStats] = useState(false);
+    const [clientName, setClientName] = useState<string>('');
 
-    // ✅ NUEVO: Estados para medidas corporales
+    // Estados para medidas corporales
     const [bodyMeasurements, setBodyMeasurements] = useState<Record<string, MeasurementData>>({});
     const [availableBodyMetrics, setAvailableBodyMetrics] = useState<BodyMeasurementType[]>([]);
     const [isLoadingBodyStats, setIsLoadingBodyStats] = useState(false);
 
-    // Datos de ejemplo para medidas corporales (mantener como fallback)
+    // Datos de fallback para medidas corporales
     const fallbackMeasurementData: Record<string, MeasurementData> = {
         'waist': {
             current: 85,
@@ -149,10 +157,8 @@ const ProgressDashboard: React.FC = () => {
     };
 
     const LineChart: React.FC<LineChartProps> = ({ data, height = '128px' }) => {
-        // ✅ VALIDACIÓN: Asegurar que data es un array de números
         const validData = Array.isArray(data) ? data.filter(val => typeof val === 'number' && !isNaN(val)) : [];
 
-        // ✅ VALIDACIÓN: Si no hay datos válidos, mostrar un gráfico plano
         if (validData.length === 0) {
             return (
                 <div style={{
@@ -230,16 +236,15 @@ const ProgressDashboard: React.FC = () => {
         );
     };
 
-    // ✅ NUEVA FUNCIÓN: Cargar medidas corporales del usuario
+    // Función para cargar medidas corporales del cliente
     const loadBodyMeasurements = async () => {
-        if (!currentUser?.uid) return;
+        if (!clientId) return;
 
         setIsLoadingBodyStats(true);
         try {
-            const progressData = await getBodyMeasurementProgressData(currentUser.uid);
+            const progressData = await getBodyMeasurementProgressData(clientId);
 
             if (progressData && progressData.availableMetrics.length > 0) {
-                // Convertir datos de Firebase a formato del componente
                 const processedMeasurements: Record<string, MeasurementData> = {};
 
                 progressData.availableMetrics.forEach(metric => {
@@ -260,21 +265,19 @@ const ProgressDashboard: React.FC = () => {
                 setBodyMeasurements(processedMeasurements);
                 setAvailableBodyMetrics(progressData.availableMetrics);
 
-                // Seleccionar la primera métrica disponible si no hay una seleccionada
                 if (progressData.availableMetrics.length > 0 &&
                     !progressData.availableMetrics.includes(selectedMeasurement as BodyMeasurementType)) {
                     setSelectedMeasurement(progressData.availableMetrics[0]);
                 }
 
-                console.log('✅ Medidas corporales cargadas:', progressData.availableMetrics.length);
+                console.log('✅ Medidas corporales del cliente cargadas:', progressData.availableMetrics.length);
             } else {
-                // No hay datos, usar fallback
                 setBodyMeasurements(fallbackMeasurementData);
                 setAvailableBodyMetrics([]);
-                console.log('ℹ️ No hay suficientes medidas corporales, usando datos de ejemplo');
+                console.log('ℹ️ No hay suficientes medidas corporales del cliente, usando datos de ejemplo');
             }
         } catch (error) {
-            console.error('Error cargando medidas corporales:', error);
+            console.error('Error cargando medidas corporales del cliente:', error);
             setBodyMeasurements(fallbackMeasurementData);
             setAvailableBodyMetrics([]);
         } finally {
@@ -282,15 +285,69 @@ const ProgressDashboard: React.FC = () => {
         }
     };
 
-    // ✅ NUEVA LÓGICA: Obtener datos de medidas corporales (reales o fallback)
-    const currentMeasurement: MeasurementData = bodyMeasurements[selectedMeasurement] || fallbackMeasurementData[selectedMeasurement] || {
-        current: 0,
-        change: '0',
-        records: 0,
-        chartData: [0]
+    // Función para cargar ejercicios del cliente
+    const loadUserExercises = async () => {
+        if (!clientId) return;
+
+        try {
+            const userExerciseList = await getUserExerciseList(clientId);
+            setUserExercises(userExerciseList);
+
+            if (userExerciseList.length > 0 && !selectedExercise) {
+                setSelectedExercise(userExerciseList[0]);
+            }
+            console.log('✅ Ejercicios del cliente cargados:', userExerciseList.length);
+        } catch (error) {
+            console.error('Error cargando ejercicios del cliente:', error);
+        }
     };
 
-    // ✅ NUEVA LÓGICA: Usar datos reales de Firebase o fallback
+    // Función para cargar estadísticas del ejercicio seleccionado
+    const loadExerciseStats = async (exerciseName: string) => {
+        if (!clientId || !exerciseName) return;
+
+        setIsLoadingStats(true);
+        try {
+            const stats = await calculateExerciseStats(clientId, exerciseName);
+            setExerciseStats({
+                maxWeight: stats.maxWeight,
+                maxReps: stats.maxReps,
+                effort: stats.averageRir,
+                weightHistory: stats.weightHistory,
+                repsHistory: stats.repsHistory,
+                totalWeight: stats.totalWeight,
+                workoutCount: stats.workoutCount
+            });
+            console.log('✅ Estadísticas del ejercicio cargadas para cliente');
+        } catch (error) {
+            console.error('Error cargando estadísticas del ejercicio del cliente:', error);
+        } finally {
+            setIsLoadingStats(false);
+        }
+    };
+
+    // Función para cargar información del cliente
+    const loadClientInfo = async () => {
+        if (!clientId) return;
+
+        try {
+            // Aquí puedes cargar información básica del cliente desde Firestore
+            // Por ahora usamos un placeholder
+            setClientName(`Cliente ${clientId.substring(0, 8)}`);
+        } catch (error) {
+            console.error('Error cargando información del cliente:', error);
+        }
+    };
+
+    // Obtener datos actuales
+    const currentMeasurement: MeasurementData = bodyMeasurements[selectedMeasurement] ||
+        fallbackMeasurementData[selectedMeasurement] || {
+            current: 0,
+            change: '0',
+            records: 0,
+            chartData: [0]
+        };
+
     const safeExerciseData: ExerciseData = exerciseStats || {
         maxWeight: 0,
         maxReps: 0,
@@ -301,22 +358,17 @@ const ProgressDashboard: React.FC = () => {
         workoutCount: 0
     };
 
-    // ✅ HELPER FUNCTIONS: Para manejo de tipos de medidas
+    // Helper functions para manejo de tipos de medidas
     const getDisplayName = (measurement: BodyMeasurementType | string): string => {
-        // Si viene como string “crudo”, intento convertirlo a BodyMeasurementType
         if (typeof measurement === 'string') {
             const maybeEnumKey = Object.values(BodyMeasurementType).find(val => val === measurement);
             if (maybeEnumKey) {
-                // Aquí TS sabe que maybeEnumKey es BodyMeasurementType
                 return MEASUREMENT_INFO[maybeEnumKey].displayName;
             }
-            return measurement; // No era un enum válido → devuelvo literal
+            return measurement;
         }
-
-        // Si measurement ya es BodyMeasurementType (no entra en el typeof string)
         return MEASUREMENT_INFO[measurement].displayName;
     };
-
 
     const getUnit = (measurement: BodyMeasurementType | string): string => {
         if (typeof measurement === 'string') {
@@ -324,88 +376,87 @@ const ProgressDashboard: React.FC = () => {
             if (maybeEnumKey) {
                 return MEASUREMENT_INFO[maybeEnumKey].unit;
             }
-            return 'cm'; // fallback
+            return 'cm';
         }
         return MEASUREMENT_INFO[measurement].unit;
     };
 
-    // ✅ NUEVA FUNCIÓN: Cargar ejercicios del usuario
-    const loadUserExercises = async () => {
-        if (!currentUser?.uid) return;
-
-        try {
-            const userExerciseList = await getUserExerciseList(currentUser.uid);
-            setUserExercises(userExerciseList);
-
-            // Si hay ejercicios del usuario, seleccionar el primero
-            if (userExerciseList.length > 0 && !selectedExercise) {
-                setSelectedExercise(userExerciseList[0]);
-            }
-        } catch (error) {
-            console.error('Error cargando ejercicios del usuario:', error);
-        }
-    };
-
-    // ✅ NUEVA FUNCIÓN: Cargar estadísticas del ejercicio seleccionado
-    const loadExerciseStats = async (exerciseName: string) => {
-        if (!currentUser?.uid || !exerciseName) return;
-
-        setIsLoadingStats(true);
-        try {
-            const stats = await calculateExerciseStats(currentUser.uid, exerciseName);
-            setExerciseStats({
-                maxWeight: stats.maxWeight,
-                maxReps: stats.maxReps,
-                effort: stats.averageRir,
-                weightHistory: stats.weightHistory,
-                repsHistory: stats.repsHistory,
-                totalWeight: stats.totalWeight,
-                workoutCount: stats.workoutCount
-            });
-        } catch (error) {
-            console.error('Error cargando estadísticas del ejercicio:', error);
-        } finally {
-            setIsLoadingStats(false);
-        }
-    };
-
+    // Effects
     useEffect(() => {
         const loadData = async () => {
-            if (!currentUser?.uid) return;
+            if (!clientId || !currentUser?.uid) return;
 
             try {
-                // Cargar ejercicios globales (para fallback)
+                // Verificar que el cliente pertenece al entrenador actual
+                // (Esta verificación la podrías hacer en el backend o aquí)
+
+                await Promise.all([
+                    loadClientInfo(),
+                    loadUserExercises(),
+                    loadBodyMeasurements()
+                ]);
+
+                // Cargar ejercicios globales para fallback
                 const exercisesList = await getExercisesWithCategories();
                 setExercises(exercisesList);
-
-                // Cargar ejercicios específicos del usuario
-                await loadUserExercises();
-
-                // ✅ NUEVO: Cargar medidas corporales
-                await loadBodyMeasurements();
             } catch (error) {
-                console.error('Error cargando datos:', error);
+                console.error('Error cargando datos del cliente:', error);
             }
         };
 
         loadData();
-    }, [currentUser?.uid]);
+    }, [clientId, currentUser?.uid]);
 
-    // ✅ NUEVO: Efecto para recargar medidas cuando cambia la tab
     useEffect(() => {
-        if (activeTab === 'measurements' && currentUser?.uid) {
+        if (activeTab === 'measurements' && clientId) {
             loadBodyMeasurements();
         }
-    }, [activeTab, currentUser?.uid]);
+    }, [activeTab, clientId]);
 
-    // ✅ NUEVO: Efecto para cargar stats cuando cambia el ejercicio seleccionado
     useEffect(() => {
-        if (selectedExercise) {
+        if (selectedExercise && clientId) {
             loadExerciseStats(selectedExercise);
         }
-    }, [selectedExercise, currentUser?.uid]);
+    }, [selectedExercise, clientId]);
 
-    // ✅ SOLUCIÓN: No renderizar contenido de ejercicios si no hay selectedExercise válido
+    // Validaciones
+    if (!clientId) {
+        return (
+            <div style={{
+                minHeight: '100vh',
+                backgroundColor: '#0F172A',
+                padding: '20px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}>
+                <div style={{
+                    backgroundColor: '#1F2937',
+                    borderRadius: '16px',
+                    padding: '32px',
+                    color: 'white',
+                    textAlign: 'center'
+                }}>
+                    <p>ID de cliente no válido</p>
+                    <button
+                        onClick={() => navigate('/clients')}
+                        style={{
+                            marginTop: '16px',
+                            padding: '8px 16px',
+                            backgroundColor: '#00E5CC',
+                            color: '#1F2937',
+                            border: 'none',
+                            borderRadius: '8px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Volver a clientes
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
     if (activeTab === 'records' && !selectedExercise && !isLoadingStats) {
         return (
             <div style={{
@@ -425,8 +476,8 @@ const ProgressDashboard: React.FC = () => {
                 }}>
                     <p>
                         {userExercises.length === 0 ?
-                            'No tienes ejercicios registrados aún' :
-                            'Cargando datos de ejercicios...'
+                            'Este cliente no tiene ejercicios registrados aún' :
+                            'Cargando datos de ejercicios del cliente...'
                         }
                     </p>
                 </div>
@@ -467,14 +518,45 @@ const ProgressDashboard: React.FC = () => {
                         paddingBottom: '16px',
                         borderBottom: '1px solid #374151'
                     }}>
-                        <h1 style={{
-                            fontSize: '32px',
-                            fontWeight: 'bold',
-                            margin: '0'
-                        }}>
-                            Trai<span style={{ color: '#00E5CC' }}>Score</span>
-                        </h1>
-                        <Search style={{ width: '28px', height: '28px', color: '#00E5CC' }} />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                            <button
+                                onClick={() => navigate(-1)}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    padding: '8px 16px',
+                                    backgroundColor: '#374151',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontSize: '14px'
+                                }}
+                            >
+                                <ArrowLeft size={16} />
+                                Volver
+                            </button>
+                            <div>
+                                <h1 style={{
+                                    fontSize: '32px',
+                                    fontWeight: 'bold',
+                                    margin: '0'
+                                }}>
+                                    Estadísticas de {clientName}
+                                </h1>
+                                <p style={{
+                                    fontSize: '14px',
+                                    color: '#9CA3AF',
+                                    margin: '4px 0 0 0'
+                                }}>
+                                    Progreso y medidas del cliente
+                                </p>
+                            </div>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <TrendingUp style={{ width: '24px', height: '24px', color: '#00E5CC' }} />
+                        </div>
                     </div>
 
                     {/* Tabs and Selector Row */}
@@ -507,7 +589,7 @@ const ProgressDashboard: React.FC = () => {
                                     cursor: 'pointer'
                                 }}
                             >
-                                Mis records
+                                Records de ejercicios
                             </button>
                             <button
                                 onClick={() => setActiveTab('measurements')}
@@ -524,7 +606,7 @@ const ProgressDashboard: React.FC = () => {
                                     cursor: 'pointer'
                                 }}
                             >
-                                Mis medidas
+                                Medidas corporales
                             </button>
                         </div>
 
@@ -536,7 +618,7 @@ const ProgressDashboard: React.FC = () => {
                                 marginBottom: '8px',
                                 color: '#9CA3AF'
                             }}>
-                                {activeTab === 'measurements' ? 'Seleccionar medida:' : 'Filtrar por:'}
+                                {activeTab === 'measurements' ? 'Seleccionar medida:' : 'Filtrar por ejercicio:'}
                             </h2>
                             <div style={{position: 'relative'}}>
                                 <select
@@ -571,7 +653,6 @@ const ProgressDashboard: React.FC = () => {
                                                 </option>
                                             ))
                                         : [
-                                            // ✅ NUEVA LÓGICA: Mostrar ejercicios del usuario primero
                                             ...userExercises.map((exerciseName) => (
                                                 <option key={exerciseName} value={exerciseName}>
                                                     {exerciseName} ({safeExerciseData.workoutCount > 0 ?
@@ -579,7 +660,6 @@ const ProgressDashboard: React.FC = () => {
                                                     'sin datos'})
                                                 </option>
                                             )),
-                                            // Luego ejercicios globales que no tiene el usuario
                                             ...exercises
                                                 .filter(exercise => !userExercises.includes(exercise.name))
                                                 .map((exercise) => (
@@ -616,7 +696,7 @@ const ProgressDashboard: React.FC = () => {
                                     marginBottom: '32px',
                                     textAlign: 'center'
                                 }}>
-                                    <p style={{ color: '#9CA3AF' }}>Cargando medidas corporales...</p>
+                                    <p style={{ color: '#9CA3AF' }}>Cargando medidas corporales del cliente...</p>
                                 </div>
                             )}
 
@@ -719,14 +799,6 @@ const ProgressDashboard: React.FC = () => {
                                             {currentMeasurement.summary && (
                                                 <div style={{ textAlign: 'center' }}>
                                                     <p style={{
-                                                        fontSize: '14px',
-                                                        color: '#9CA3AF',
-                                                        marginBottom: '6px',
-                                                        fontWeight: '500'
-                                                    }}>
-                                                        Tendencia:
-                                                    </p>
-                                                    <p style={{
                                                         fontSize: '16px',
                                                         fontWeight: 'bold',
                                                         color: currentMeasurement.summary.trend === 'increasing' ? '#10B981' :
@@ -764,7 +836,7 @@ const ProgressDashboard: React.FC = () => {
                                         color: '#9CA3AF',
                                         marginBottom: '16px'
                                     }}>
-                                        Necesitas al menos 2 registros de medidas corporales para ver el progreso.
+                                        Este cliente necesita al menos 2 registros de medidas corporales para ver el progreso.
                                     </p>
                                     <p style={{
                                         fontSize: '12px',
@@ -787,7 +859,7 @@ const ProgressDashboard: React.FC = () => {
                                     marginBottom: '32px',
                                     textAlign: 'center'
                                 }}>
-                                    <p style={{ color: '#9CA3AF' }}>Cargando estadísticas...</p>
+                                    <p style={{ color: '#9CA3AF' }}>Cargando estadísticas del cliente...</p>
                                 </div>
                             )}
 
@@ -976,7 +1048,7 @@ const ProgressDashboard: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    {/* Fun Facts */}
+                                    {/* Fun Facts for Client */}
                                     <div style={{
                                         marginTop: '20px',
                                         padding: '16px',
@@ -989,7 +1061,7 @@ const ProgressDashboard: React.FC = () => {
                                             color: '#F9FAFB',
                                             marginBottom: '8px'
                                         }}>
-                                            💪 Dato curioso:
+                                            💪 Logros del cliente:
                                         </h4>
                                         <p style={{
                                             fontSize: '14px',
@@ -997,12 +1069,12 @@ const ProgressDashboard: React.FC = () => {
                                             margin: '0'
                                         }}>
                                             {safeExerciseData.totalWeight >= 1000
-                                                ? "¡Has levantado más de una tonelada! 🐘"
+                                                ? "¡Tu cliente ha levantado más de una tonelada! 🐘"
                                                 : safeExerciseData.totalWeight >= 500
-                                                    ? "¡Has levantado el peso de una motocicleta! 🏍️"
+                                                    ? "¡Tu cliente ha levantado el peso de una motocicleta! 🏍️"
                                                     : safeExerciseData.totalWeight >= 100
-                                                        ? "¡Has levantado el peso de una persona! 🧑‍🤝‍🧑"
-                                                        : "¡Sigue entrenando para alcanzar grandes logros! 🚀"
+                                                        ? "¡Tu cliente ha levantado el peso de una persona! 🧑‍🤝‍🧑"
+                                                        : "¡Tu cliente está en el buen camino para alcanzar grandes logros! 🚀"
                                             }
                                         </p>
                                     </div>
@@ -1031,7 +1103,7 @@ const ProgressDashboard: React.FC = () => {
                                         color: '#9CA3AF',
                                         marginBottom: '0'
                                     }}>
-                                        Comienza a entrenar este ejercicio para ver tus estadísticas aquí.
+                                        Este cliente no ha entrenado este ejercicio aún.
                                     </p>
                                 </div>
                             )}
@@ -1043,4 +1115,4 @@ const ProgressDashboard: React.FC = () => {
     );
 };
 
-export default ProgressDashboard;
+export default ClientStats;

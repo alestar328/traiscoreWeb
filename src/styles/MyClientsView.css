@@ -1,46 +1,456 @@
+/* MyClientsView.css - Actualizado */
 .myclients-wrapper {
     position: relative;
     padding: 24px;
-    background-color: #3b858c;
-    min-height: 70vh;
+    background: linear-gradient(135deg, #3b858c 0%, #2c6975 100%);
+    min-height: 100vh;
     color: white;
 }
 
-.myclients-wrapper h1 {
-    text-align: center;
+/* Header Styles */
+.myclients-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-title h1 {
+    margin: 0;
     font-size: 2rem;
     font-weight: bold;
-    margin-bottom: 2rem;
-}
-.ClientsContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1.5rem;
-    justify-items: center;
-    padding: 2rem;
+    color: white;
 }
 
-.floating-delete-btn {
-    position: fixed;        /* fijo sobre la ventana */
-    bottom: 24px;           /* separación inferior */
-    right: 24px;            /* separación derecha */
-    width: 120px;
-    height: 120px;
-    background-color: #e74c3c;  /* rojo */
+.clients-count {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Search Container */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.search-container:focus-within {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.search-input {
+    background: none;
     border: none;
-    border-radius: 50%;     /* completamente circular */
+    outline: none;
     color: white;
+    font-size: 1rem;
+    width: 200px;
+    placeholder-color: rgba(255, 255, 255, 0.7);
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.refresh-btn,
+.invitations-btn,
+.add-client-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.refresh-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.75rem;
+}
+
+.refresh-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.refresh-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.invitations-btn {
+    background: rgba(255, 193, 7, 0.9);
+    color: #212529;
+}
+
+.invitations-btn:hover {
+    background: #ffc107;
+    transform: translateY(-2px);
+}
+
+.add-client-btn {
+    background: rgba(40, 167, 69, 0.9);
+    color: white;
+}
+
+.add-client-btn:hover {
+    background: #28a745;
+    transform: translateY(-2px);
+}
+
+/* Spinning animation for refresh */
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Clients Grid */
+.ClientsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+    padding: 1rem;
+}
+
+/* Loading State */
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    gap: 1rem;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loading-state p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Error State */
+.error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    gap: 1rem;
+    text-align: center;
+}
+
+.error-state p {
+    font-size: 1.1rem;
+    color: #ffcccb;
+    margin-bottom: 1rem;
+}
+
+.retry-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.empty-icon {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 400px;
+}
+
+.add-first-client-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    background: rgba(40, 167, 69, 0.9);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.add-first-client-btn:hover {
+    background: #28a745;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* No Results State */
+.no-results-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    gap: 1rem;
+    text-align: center;
+}
+
+.no-results-icon {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+}
+
+.no-results-state h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: white;
+}
+
+.no-results-state p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.clear-search-btn {
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.clear-search-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform .1s, opacity .2s;
     z-index: 1000;
+    padding: 2rem;
 }
 
-.floating-delete-btn:hover {
-    opacity: 0.85;
-    transform: scale(1.05);
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    color: #333;
+}
+
+.delete-modal h3 {
+    color: #e53e3e;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.delete-modal p {
+    color: #4a5568;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.warning-text {
+    font-style: italic;
+    color: #ed8936 !important;
+    font-size: 0.9rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.cancel-btn,
+.confirm-delete-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.cancel-btn {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.cancel-btn:hover {
+    background: #cbd5e0;
+    transform: translateY(-1px);
+}
+
+.confirm-delete-btn {
+    background: #e53e3e;
+    color: white;
+}
+
+.confirm-delete-btn:hover {
+    background: #c53030;
+    transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .myclients-wrapper {
+        padding: 1rem;
+    }
+
+    .myclients-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+
+    .action-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .ClientsContainer {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .modal-overlay {
+        padding: 1rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .header-title h1 {
+        font-size: 1.5rem;
+    }
+
+    .search-container {
+        padding: 0.5rem;
+    }
+
+    .search-input {
+        font-size: 0.9rem;
+    }
 }

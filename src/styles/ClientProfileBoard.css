@@ -131,19 +131,125 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
+/* Header de medidas con botón de historial */
+.measurements-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
 .measurements h3 {
     font-size: 24px;
     font-weight: 700;
-    margin: 0 0 24px 0;
+    margin: 0;
     color: white;
 }
 
-.measurements > div:first-of-type {
+.history-toggle-btn {
+    background: linear-gradient(135deg, #4a90a4, #5ba3b8);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    white-space: nowrap;
+}
+
+.history-toggle-btn:hover {
+    background: linear-gradient(135deg, #5ba3b8, #6bb3c8);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.history-toggle-btn:active {
+    transform: translateY(0);
+}
+
+/* Vista actual */
+.current-view > div:first-child {
     color: rgba(255, 255, 255, 0.7);
     font-size: 14px;
     margin-bottom: 24px;
+    font-style: italic;
 }
 
+/* Vista de historial */
+.history-view {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.history-view::-webkit-scrollbar {
+    width: 6px;
+}
+
+.history-view::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.history-view::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.history-view::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.history-item {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.history-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.measurement-entry.historical,
+.measurement-entry.current {
+    margin: 0;
+}
+
+.measurement-date {
+    font-weight: 700;
+    color: #4a90a4;
+    margin-bottom: 16px;
+    font-size: 16px;
+    text-align: center;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Listas de medidas */
 .measurements ul {
     list-style: none;
     padding: 0;
@@ -253,6 +359,18 @@
         width: 100%;
     }
 
+    /* Header de medidas responsive */
+    .measurements-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .history-toggle-btn {
+        justify-content: center;
+        width: 100%;
+    }
+
     /* En móvil, las medidas van en una sola columna */
     .measurements ul {
         grid-template-columns: 1fr;
@@ -266,6 +384,20 @@
     .de-interes {
         min-width: unset;
         width: 100%;
+    }
+
+    /* Ajustes para historial en móvil */
+    .history-view {
+        max-height: 50vh;
+    }
+
+    .history-item {
+        padding: 16px;
+    }
+
+    .measurement-date {
+        font-size: 14px;
+        padding: 6px 12px;
     }
 }
 
@@ -283,5 +415,18 @@
 
     .profile-info h2 {
         font-size: 24px;
+    }
+
+    .measurements h3 {
+        font-size: 20px;
+    }
+
+    .history-toggle-btn {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+
+    .history-item {
+        padding: 12px;
     }
 }

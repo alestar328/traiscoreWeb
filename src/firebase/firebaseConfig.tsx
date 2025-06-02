@@ -8,7 +8,6 @@ import {Timestamp} from "@firebase/firestore";
 
 
 
-
 const firebaseConfig = {
     apiKey: "AIzaSyC7qqh_tY4nk2FZVpOa_3gQ8kF6Phh2qEQ",
     authDomain: "traiscore.firebaseapp.com",
@@ -18,9 +17,12 @@ const firebaseConfig = {
     appId: "1:484079628970:web:04911d7f2a445593add6d3",
     measurementId: "G-VBNGHDFH9M"
 };
-
-
 const app = initializeApp(firebaseConfig);
+
+const firestore = getFirestore(app);
+
+
+export { firestore };
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);

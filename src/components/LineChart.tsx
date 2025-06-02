@@ -1,6 +1,6 @@
 import {
-    AreaChart,
-    Area,
+    LineChart as RechartsLineChart,
+    Line,
     XAxis,
     Tooltip,
     ResponsiveContainer
@@ -18,10 +18,10 @@ import {LineChartInterface} from "../models/ChartInterfaces.tsx";
  * - height: number (optional, default 200)
  */
 const LineChart: React.FC<LineChartInterface> = ({
-                                                 data,
-                                                 width = '100%',
-                                                 height = 200,
-                                             }) => {
+                                                     data,
+                                                     width = '100%',
+                                                     height = 200,
+                                                 }) => {
     return (
         <div
             style={{
@@ -31,25 +31,18 @@ const LineChart: React.FC<LineChartInterface> = ({
             }}
         >
             <ResponsiveContainer width={width} height={height}>
-                <AreaChart
+                <RechartsLineChart
                     data={data}
                     margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
                 >
-                    <defs>
-                        <linearGradient id="gradientWeight" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#2CE9E7" stopOpacity={0.6} />
-                            <stop offset="100%" stopColor="#2CE9E7" stopOpacity={0} />
-                        </linearGradient>
-                    </defs>
-
-                    <Area
+                    <Line
                         type="monotone"
                         dataKey="weight"
                         stroke="#2CE9E7"
-                        strokeWidth={3}
-                        fill="url(#gradientWeight)"
-                        dot={{ fill: '#2CE9E7', r: 4 }}
-                        activeDot={{ r: 5 }}
+                        strokeWidth={2}
+                        dot={{ fill: '#2CE9E7', r: 3, strokeWidth: 0 }}
+                        activeDot={{ r: 4, fill: '#2CE9E7', strokeWidth: 0 }}
+                        connectNulls={true}
                     />
 
                     <XAxis
@@ -61,11 +54,16 @@ const LineChart: React.FC<LineChartInterface> = ({
                     />
 
                     <Tooltip
-                        contentStyle={{ backgroundColor: '#444', border: 'none', borderRadius: '8px' }}
+                        contentStyle={{
+                            backgroundColor: '#444',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontSize: '12px'
+                        }}
                         labelStyle={{ color: '#fff' }}
                         itemStyle={{ color: '#2CE9E7' }}
                     />
-                </AreaChart>
+                </RechartsLineChart>
             </ResponsiveContainer>
         </div>
     );

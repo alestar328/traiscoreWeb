@@ -1,0 +1,255 @@
+/* ClientStats.css - Estilos para el dashboard de estadísticas del cliente */
+
+/* Container principal */
+.client-stats-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Marco principal del dashboard */
+.client-stats-frame {
+    width: 100%;
+    max-width: 1200px;
+    background: #1F2937;
+    border-radius: 16px;
+    box-shadow:
+            0 25px 50px -12px rgba(0, 0, 0, 0.25),
+            0 0 0 1px rgba(55, 65, 81, 0.3);
+    border: 1px solid #374151;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+/* Contenido del dashboard */
+.client-stats-content {
+    color: white;
+    padding: 24px;
+}
+
+/* Header principal */
+.client-stats-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #374151;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #374151;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    fontSize: 14px;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: #4B5563;
+    transform: translateY(-1px);
+}
+
+.header-info h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+    background: linear-gradient(135deg, #00E5CC, #10B981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.header-info p {
+    font-size: 14px;
+    color: #9CA3AF;
+    margin: 4px 0 0 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Grid de pestañas y selector */
+.tabs-selector-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+    align-items: end;
+}
+
+/* Contenedor de pestañas */
+.tabs-container {
+    background: #374151;
+    border-radius: 12px;
+    padding: 4px;
+    display: flex;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-button {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-button.active {
+    background: linear-gradient(135deg, #00E5CC, #10B981);
+    color: #1F2937;
+    box-shadow:
+            0 4px 14px rgba(0, 229, 204, 0.3),
+            0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.tab-button.inactive {
+    background: transparent;
+    color: #D1D5DB;
+}
+
+.tab-button:hover:not(.active) {
+    background: rgba(0, 229, 204, 0.1);
+    color: #00E5CC;
+}
+
+/* Selector de medidas/ejercicios */
+.selector-container h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #9CA3AF;
+}
+
+.selector-wrapper {
+    position: relative;
+}
+
+.selector-dropdown {
+    width: 100%;
+    background: white;
+    color: #1F2937;
+    padding: 18px 20px;
+    border-radius: 12px;
+    appearance: none;
+    border: 2px solid #00E5CC;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            0 0 0 1px rgba(0, 229, 204, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.selector-dropdown:hover {
+    box-shadow:
+            0 8px 25px -8px rgba(0, 229, 204, 0.4),
+            0 0 0 2px rgba(0, 229, 204, 0.3);
+}
+
+.selector-dropdown:focus {
+    outline: none;
+    box-shadow:
+            0 0 0 3px rgba(0, 229, 204, 0.3),
+            0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    color: #4B5563;
+    pointer-events: none;
+}
+
+/* Estados de carga */
+.loading-container {
+    background: #374151;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+    text-align: center;
+    border: 1px solid #4B5563;
+}
+
+.loading-container p {
+    color: #9CA3AF;
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Grid de progreso circular */
+.circular-progress-grid {
+    background: #374151;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow:
+            0 4px 6px -1px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid #4B5563;
+}
+
+.progress-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 32px;
+}
+
+.progress-item {
+    text-align: center;
+}
+
+.progress-label {
+    font-size: 16px;
+    color: #9CA3AF;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+/* Grid de gráficos lado a lado */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.chart-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #F9FAFB;
+}
+
+/* Grid de progreso de medidas corporales */
+.measurements
