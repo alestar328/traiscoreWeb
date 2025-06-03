@@ -7,7 +7,7 @@ import Home from './components/pages/Home.tsx';
 import FooterComp  from "./components/FooterComp.tsx";
 import Login from './components/pages/Login.tsx';
 import CreateRoutine from "./components/TrainerDashboard/CreateRoutine.tsx";
-import ClientProfileForm from "./components/pages/ClientProfileForm.tsx";
+import ClientProfileTUI from "./components/pages/ClientProfileTUI.tsx";
 import MyClientsView from "./components/TrainerDashboard/MyClientsView.tsx";
 import RegisterPage from "./components/pages/RegisterPage.tsx";
 import ClientDashboard from "./components/ClientDashboard/ClientDashboard.tsx";
@@ -36,7 +36,7 @@ function App() {
                           <Route path='/createRoutine' element={<CreateRoutine/>}/>
                           <Route path='/myclients' element={<MyClientsView/>}/>
                           <Route path='/authdebug' element={<AuthDebugComponent/>}/>
-                          <Route path='/clientprofile/:uid' element={<ClientProfileForm/>}/>
+                          <Route path='/clientprofile/:uid' element={<ClientProfileTUI/>}/>
                           <Route path='/trainerdashboard' element={<TrainerDashboard/>}/>
                           <Route path='/clientdashboard' element={<ClientDashboard/>}/>
                           <Route path='/contactwebform' element={<ContactWebForm/>}/>
@@ -44,7 +44,7 @@ function App() {
                           <Route path='/clientprofileboard' element={<ClientProfileBoard/>}/>
                           <Route path='/progressdashboard' element={<ProgressDashboard/>}/>
                           <Route path='/clientroutines' element={<ClientRoutines/>}/>
-                          <Route path='/clientstats' element={<ClientStats/>}/>
+                          <Route path='/clientstats/:uid' element={<ClientStats/>}/>
 
                       </Routes>
                   </div>

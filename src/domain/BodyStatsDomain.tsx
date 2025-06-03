@@ -10,22 +10,6 @@ type TimestampLike = Timestamp | Date | string | number | null | undefined;
 /**
  * Interface para las medidas corporales raw de Firebase
  */
-interface FirebaseBodyStats {
-    userId: string;
-    gender: string;
-    measurements: {
-        Height?: string;
-        Weight?: string;
-        Neck?: string;
-        Chest?: string;
-        Arms?: string;
-        Waist?: string;
-        Thigh?: string;
-        Calf?: string;
-    };
-    createdAt: Timestamp;
-    updatedAt?: Timestamp;
-}
 
 /**
  * Interface para datos raw de Firebase (más flexible)
