@@ -80,7 +80,7 @@ function Navbar() {
 
     return (
         <nav className="navbar">
-            <div className="navbar-container">
+            <div className="navbar-container justify-around">
                 <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
                     TraiScore
                     <img src={logo} alt="Logo" className="navbar-img"/>
