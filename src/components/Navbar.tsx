@@ -103,6 +103,11 @@ function Navbar() {
                             Contáctanos
                         </Link>
                     </li>
+                    <li className='nav-item'>
+                        <Link to='/contactwebform' className='nav-links' onClick={closeMobileMenu}>
+                            Para entrenadores
+                        </Link>
+                    </li>
 
                     {/* Contenido para usuarios autenticados */}
                     {isAuthenticated && currentUser ? (

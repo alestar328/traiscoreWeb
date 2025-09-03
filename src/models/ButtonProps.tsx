@@ -1,5 +1,5 @@
 
-export const STYLES = ['btn--primary', 'btn--outline'] as const;
+export const STYLES = ['btn--primary', 'btn--outline', 'btn--presentation'] as const;
 export const SIZES = ['btn--medium', 'btn--large'] as const;
 
 export type ButtonStyle = (typeof STYLES)[number];

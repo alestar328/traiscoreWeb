@@ -4,7 +4,7 @@
     height: 100%;
     width: 100%;
     /* quita display:flex / flex-direction / align-items */
-    box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.2);
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.75);
     position: relative; /* ayuda para overlays si los usas */
 }
 
