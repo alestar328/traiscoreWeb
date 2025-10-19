@@ -13,7 +13,7 @@ function TemplatesSection() {
               Todo lo que necesitas
             </h2>
             <h3 className="text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-8">
-              Para entrenar bien
+              Para entrenar y no perder el tiempo
             </h3>
             <p className="text-xl text-gray-300 leading-relaxed max-w-lg mx-auto lg:mx-0">
               Accede a plantillas de ejercicios profesionales, rutinas personalizadas y todo lo necesario para llevar tu entrenamiento al siguiente nivel.

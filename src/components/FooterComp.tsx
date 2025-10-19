@@ -1,4 +1,5 @@
 import { FaFacebookF, FaTwitter, FaPaperPlane, FaInstagram } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import '../styles/FooterComp.css';
 
 const FooterComp = () => {
@@ -35,11 +36,11 @@ const FooterComp = () => {
             <hr className="separator" />
 
             <div className="bottomSection">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Use</a>
-                <a href="#">Sales and Refunds</a>
-                <a href="#">Legal</a>
-                <a href="#">Site Map</a>
+                <Link to="/privacy-policy">Privacy Policy</Link>
+                <Link to="/terms-of-service">Terms of Service</Link>
+                <Link to="/data-deletion-request">Delete My Data</Link>
+                <a href="#contact">Contact Us</a>
+                <a href="#support">Support</a>
             </div>
         </footer>
     );

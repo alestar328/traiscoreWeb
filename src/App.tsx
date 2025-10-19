@@ -20,6 +20,11 @@ import AuthDebugComponent from "./contexts/AuthDebugComponent.tsx";
 import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
 import ClientRoutines from "./components/ClientDashboard/ClientRoutines.tsx";
 import ClientStats from "./components/pages/ClientStats.tsx";
+import PrivacyPolicy from "./components/pages/PrivacyPolicy.tsx";
+import TermsOfService from "./components/pages/TermsOfService.tsx";
+import DataDeletionRequest from "./components/DataDeletionRequest.tsx";
+import CookieConsent from "./components/CookieConsent.tsx";
+import LegalCompliance from "./components/pages/LegalCompliance.tsx";
 
 function App() {
   return (
@@ -32,7 +37,7 @@ function App() {
                           <Route path='/' element={<Home/>}/>
                           <Route path="/login" element={<Login/>}/>
                           <Route path="/register" element={<RegisterPage/>}/>
-                          <Route path="/register/profile" element={<UserProfileFormWrapper/>} />
+                          <Route path="/register/profile" element={<UserProfileFormWrapper onGoBack={() => window.history.back()} />} />
                           <Route path='/createRoutine' element={<CreateRoutine/>}/>
                           <Route path='/myclients' element={<MyClientsView/>}/>
                           <Route path='/authdebug' element={<AuthDebugComponent/>}/>
@@ -45,10 +50,15 @@ function App() {
                           <Route path='/progressdashboard' element={<ProgressDashboard/>}/>
                           <Route path='/clientroutines' element={<ClientRoutines/>}/>
                           <Route path='/clientstats/:uid' element={<ClientStats/>}/>
+                          <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
+                          <Route path='/terms-of-service' element={<TermsOfService/>}/>
+                          <Route path='/data-deletion-request' element={<DataDeletionRequest/>}/>
+                          <Route path='/legal-compliance' element={<LegalCompliance/>}/>
 
                       </Routes>
                   </div>
                   <FooterComp/>
+                  <CookieConsent />
               </Router>
           </div>
           )
