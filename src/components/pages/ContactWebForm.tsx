@@ -1,68 +1,84 @@
-import "../../styles/ContactWebForm.css";
 import contactPic from "../../assets/register_mainpic.png";
 
 const ContactWebForm = () => {
-    return (
-        <section className="flex justify-center items-center bg-gradient-to-r from-indigo-900 to-black py-16">
-            <div className="max-w-7xl w-full px-4 lg:px-8 flex flex-col lg:flex-row items-center">
-                {/* Formulario */}
-                <div className="lg:w-1/2 w-full space-y-6">
-                    <h2 className="text-white text-4xl font-semibold text-center lg:text-left">
-                        Get in touch
-                    </h2>
-                    <p className="text-white text-lg text-center lg:text-left mb-8">
-                        Reach out, and let's create a universe of possibilities together!
-                    </p>
-                    <form className="bg-white p-6 rounded-lg shadow-lg space-y-6">
-                        <div className="space-y-2">
-                            <label htmlFor="user_name" className="text-gray-700 font-medium">Last Name</label>
-                            <input
-                                type="text"
-                                id="user_name"
-                                name="user_name"
-                                placeholder="Introduce tu nombre"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                            />
-                        </div>
+  return (
+    <section className="flex justify-center items-center bg-gradient-to-r from-cyan-900 via-blue-900 to-black py-12 lg:py-14 px-4 min-h-[75vh]">
+      <div className="w-full max-w-3xl mx-auto flex flex-col lg:flex-row rounded-2xl overflow-hidden shadow-2xl">
 
-                        <div className="space-y-2">
-                            <label htmlFor="email" className="text-gray-700 font-medium">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="tucorreo@ejemplo.com"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                            />
-                        </div>
+        {/* FORMULARIO */}
+        <div className="w-full lg:w-1/2 bg-[#111315] px-5 sm:px-6 py-8 flex flex-col justify-center">
+          <h2 className="text-xl sm:text-2xl font-semibold text-white mb-2 text-center lg:text-left">
+            Get in touch with us
+          </h2>
+          <p className="text-gray-400 mb-6 text-center lg:text-left text-xs sm:text-sm">
+            Hi, I'm Amanda. Need help? Use the form below or email us at
+            <span className="text-cyan-400"> help@traiscore.io</span>
+          </p>
 
-                        <div className="space-y-2">
-                            <label htmlFor="message" className="text-gray-700 font-medium">Message</label>
-                            <textarea
-                                id="message"
-                                name="message"
-                                rows={5}
-                                placeholder="Escribe tu mensaje aquí..."
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                            />
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition duration-200"
-                        >
-                            Send it to the moon 🚀
-                        </button>
-                    </form>
-                </div>
-
-                {/* Imagen */}
-                <div className="lg:w-1/2 w-full mt-8 lg:mt-0">
-                <img src={contactPic} alt="Illustration"   className="w-1/2 md:w-1/2 lg:w-full h-auto object-cover rounded-lg shadow-xl"/>
-                </div>
+          <form className="space-y-4">
+            <div>
+              <label htmlFor="name" className="block text-gray-300 mb-2 text-xs sm:text-sm">
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Your full name"
+                className="w-full bg-[#1a1c1e] text-gray-100 p-2.5 rounded-lg border border-gray-700 
+                           focus:outline-none focus:ring-2 focus:ring-cyan-400 placeholder-gray-500 text-sm"
+              />
             </div>
-        </section>
-    );
+
+            <div>
+              <label htmlFor="email" className="block text-gray-300 mb-2 text-xs sm:text-sm">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                className="w-full bg-[#1a1c1e] text-gray-100 p-2.5 rounded-lg border border-gray-700 
+                           focus:outline-none focus:ring-2 focus:ring-cyan-400 placeholder-gray-500 text-sm"
+              />
+            </div>
+
+            <div>
+              <label htmlFor="message" className="block text-gray-300 mb-2 text-xs sm:text-sm">
+                Message
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={3}
+                placeholder="Type your message here..."
+                className="w-full bg-[#1a1c1e] text-gray-100 p-2.5 rounded-lg border border-gray-700 
+                           focus:outline-none focus:ring-2 focus:ring-cyan-400 placeholder-gray-500 text-sm resize-none"
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-cyan-400 to-blue-400 text-black font-semibold py-2.5 
+                         rounded-lg transition-all duration-300 hover:shadow-cyan-400/40 hover:shadow-lg text-sm"
+            >
+              Send my message
+            </button>
+          </form>
+        </div>
+
+        {/* IMAGEN */}
+        <div className="w-full lg:w-1/2 h-48 sm:h-64 lg:h-auto bg-[#0d0f11]">
+          <img
+            src={contactPic}
+            alt="Contact visualization"
+            className="w-full h-full object-cover opacity-90"
+          />
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default ContactWebForm;

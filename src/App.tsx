@@ -28,40 +28,38 @@ import LegalCompliance from "./components/pages/LegalCompliance.tsx";
 
 function App() {
   return (
-
-          <div className="app-container">
-              <Router>
-                  <Navbar/>
-                  <div className="app-content">
-                      <Routes>
-                          <Route path='/' element={<Home/>}/>
-                          <Route path="/login" element={<Login/>}/>
-                          <Route path="/register" element={<RegisterPage/>}/>
-                          <Route path="/register/profile" element={<UserProfileFormWrapper onGoBack={() => window.history.back()} />} />
-                          <Route path='/createRoutine' element={<CreateRoutine/>}/>
-                          <Route path='/myclients' element={<MyClientsView/>}/>
-                          <Route path='/authdebug' element={<AuthDebugComponent/>}/>
-                          <Route path='/clientprofile/:uid' element={<ClientProfileTUI/>}/>
-                          <Route path='/trainerdashboard' element={<TrainerDashboard/>}/>
-                          <Route path='/clientdashboard' element={<ClientDashboard/>}/>
-                          <Route path='/contactwebform' element={<ContactWebForm/>}/>
-                          <Route path='/clientregistrationform' element={<ClientRegistrationForm/>}/>
-                          <Route path='/clientprofileboard' element={<ClientProfileBoard/>}/>
-                          <Route path='/progressdashboard' element={<ProgressDashboard/>}/>
-                          <Route path='/clientroutines' element={<ClientRoutines/>}/>
-                          <Route path='/clientstats/:uid' element={<ClientStats/>}/>
-                          <Route path='/privacy-policy' element={<PrivacyPolicy/>}/>
-                          <Route path='/terms-of-service' element={<TermsOfService/>}/>
-                          <Route path='/data-deletion-request' element={<DataDeletionRequest/>}/>
-                          <Route path='/legal-compliance' element={<LegalCompliance/>}/>
-
-                      </Routes>
-                  </div>
-                  <FooterComp/>
-                  <CookieConsent />
-              </Router>
-          </div>
-          )
-     }
+    <div className="flex flex-col min-h-screen">
+      <Router>
+        <Navbar />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/register/profile" element={<UserProfileFormWrapper onGoBack={() => window.history.back()} />} />
+            <Route path="/createRoutine" element={<CreateRoutine />} />
+            <Route path="/myclients" element={<MyClientsView />} />
+            <Route path="/authdebug" element={<AuthDebugComponent />} />
+            <Route path="/clientprofile/:uid" element={<ClientProfileTUI />} />
+            <Route path="/trainerdashboard" element={<TrainerDashboard />} />
+            <Route path="/clientdashboard" element={<ClientDashboard />} />
+            <Route path="/contactwebform" element={<ContactWebForm />} />
+            <Route path="/clientregistrationform" element={<ClientRegistrationForm />} />
+            <Route path="/clientprofileboard" element={<ClientProfileBoard />} />
+            <Route path="/progressdashboard" element={<ProgressDashboard />} />
+            <Route path="/clientroutines" element={<ClientRoutines />} />
+            <Route path="/clientstats/:uid" element={<ClientStats />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/data-deletion-request" element={<DataDeletionRequest />} />
+            <Route path="/legal-compliance" element={<LegalCompliance />} />
+          </Routes>
+        </main>
+        <FooterComp />
+        <CookieConsent />
+      </Router>
+    </div>
+  );
+}
 
 export default App

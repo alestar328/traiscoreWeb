@@ -1,73 +1,76 @@
 import React from "react";
+import { FaChartLine, FaRuler, FaCloud } from "react-icons/fa";
 
 const benefits = [
   {
-    title: "Registra tu Progreso",
+    title: "Registra tu progreso",
     description:
-      "Olvídate de perder tus entrenamientos. Registra cada repetición, serie y peso para un seguimiento preciso de tu evolución en el gimnasio.",
-    icon: "📊",
-    gradient: "from-blue-500 to-cyan-500",
-    shadow: "shadow-blue-500/25"
+      "Registra cada repetición, serie y peso para un seguimiento preciso de tu evolución en el gimnasio.",
+    icon: <FaChartLine className="text-4xl text-gray-300" />,
+    metric: "+45%",
+    label: "Crecimiento en 6 meses",
   },
   {
-    title: "Mide tu Transformación",
+    title: "Mide tu transformación",
     description:
-      "Toma medidas de brazos, pecho, cintura y más. Visualiza tu progreso corporal con gráficos claros y motivadores.",
-    icon: "📏",
-    gradient: "from-purple-500 to-pink-500",
-    shadow: "shadow-purple-500/25"
+      "Visualiza tu progreso corporal con métricas claras, motivadoras y fáciles de interpretar.",
+    icon: <FaRuler className="text-4xl text-gray-300" />,
+    metric: "90%",
+    label: "Retención de clientes",
   },
   {
-    title: "Sin Papel ni Libretas",
+    title: "Sin papel ni libretas",
     description:
-      "Dile adiós a las libretas que se pierden. Todo tu progreso está seguro en la nube, accesible desde cualquier dispositivo.",
-    icon: "📱",
-    gradient: "from-green-500 to-emerald-500",
-    shadow: "shadow-green-500/25"
+      "Asegura tus datos en la nube y accede desde cualquier dispositivo, sin riesgo de pérdida.",
+    icon: <FaCloud className="text-4xl text-gray-300" />,
+    metric: "99%",
+    label: "Datos sincronizados",
   },
 ];
 
 function BenefitsSections() {
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="py-24 bg-[#0f0f10] text-white">
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Título principal */}
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-white mb-4">
-            ¿Por qué elegir <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">TraiScore</span>?
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-100">
+            Tres razones para elegir{" "}
+            <span className="text-white">TraiScore</span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            La plataforma que simplifica la forma de entrenar y seguir tu progreso físico
+          <p className="text-gray-400 text-lg">
+            Entrena con propósito, mide tu progreso y crece con datos reales.
           </p>
         </div>
-        
-        <div className="grid md:grid-cols-3 gap-8">
+
+        {/* Grid de beneficios */}
+        <div className="grid md:grid-cols-3 gap-12">
           {benefits.map((benefit, idx) => (
-            <div 
-              key={idx} 
-              className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${benefit.gradient} p-8 text-white transform transition-all duration-500 hover:scale-105 hover:rotate-1 ${benefit.shadow} hover:shadow-2xl`}
+            <div
+              key={idx}
+              className="flex flex-col items-center text-center space-y-6 bg-[#1a1b1d] rounded-2xl p-10 transition-transform duration-300 hover:scale-[1.02] hover:bg-[#202123]"
             >
-              {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16"></div>
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-12 -translate-x-12"></div>
+              {/* Ícono */}
+              <div className="p-4 rounded-full bg-[#2a2b2d] flex items-center justify-center">
+                {benefit.icon}
               </div>
-              
-              {/* Content */}
-              <div className="relative z-10">
-                <div className="text-6xl mb-6 transform transition-transform group-hover:scale-110 group-hover:rotate-12">
-                  {benefit.icon}
-                </div>
-                
-                <h3 className="text-2xl font-bold mb-4 group-hover:text-yellow-200 transition-colors">
+
+              {/* Texto */}
+              <div>
+                <h3 className="text-2xl font-semibold mb-3 text-gray-100">
                   {benefit.title}
                 </h3>
-                
-                <p className="text-gray-100 leading-relaxed text-lg">
+                <p className="text-gray-400 text-base leading-relaxed">
                   {benefit.description}
                 </p>
-                
-                {/* Hover Effect Line */}
-                <div className="absolute bottom-0 left-0 w-0 h-1 bg-yellow-400 transition-all duration-500 group-hover:w-full"></div>
+              </div>
+
+              {/* Métrica inferior */}
+              <div className="pt-4 border-t border-gray-700 w-full">
+                <p className="text-sm text-gray-500">{benefit.label}</p>
+                <p className="text-2xl font-bold text-gray-200">
+                  {benefit.metric}
+                </p>
               </div>
             </div>
           ))}
