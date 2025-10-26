@@ -40,13 +40,13 @@ function SocialMediaSection() {
               ))}
             </div>
 
-            {/* CTA BUTTON */}
+            {/* CTA BUTTON 
             <div className="pt-6">
               <button className="group relative px-8 py-4 bg-gradient-to-r from-cyan-400 to-blue-500 text-black font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:shadow-cyan-400/30 hover:shadow-xl">
                 <span className="relative z-10">Empezar a compartir</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </button>
-            </div>
+            </div>*/}
           </div>
 
           {/* RIGHT SIDE - MOCKUP WITH GLOW */}

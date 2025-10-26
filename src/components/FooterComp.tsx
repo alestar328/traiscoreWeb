@@ -15,30 +15,16 @@ const FooterComp = () => {
           <span className="ml-2 text-white font-semibold text-xl">TraiScore</span>
         </div>
 
-        {/* Navigation */}
+        {/* Navigation 
         <nav className="flex flex-wrap justify-center gap-6 text-sm font-medium">
-          <a href="#" className="hover:text-cyan-400 transition-colors">About</a>
-          <a href="#" className="hover:text-cyan-400 transition-colors">Features</a>
-          <a href="#" className="hover:text-cyan-400 transition-colors">Pricing</a>
-          <a href="#" className="hover:text-cyan-400 transition-colors">Gallery</a>
-          <a href="#" className="hover:text-cyan-400 transition-colors">Team</a>
-        </nav>
+          <a href="#" className="hover:text-cyan-400 transition-colors">Sobre nosotros</a>
+          <a href="#" className="hover:text-cyan-400 transition-colors">Precios</a>
+        </nav>*/}
 
-        {/* Search */}
-        <div className="flex items-center bg-[#1a1c1e] rounded-full px-3 py-1 w-full max-w-xs md:max-w-[180px]">
-          <input
-            type="text"
-            placeholder="search..."
-            className="bg-transparent outline-none border-none text-sm text-gray-200 placeholder-gray-500 flex-grow px-2"
-          />
-          <button className="text-cyan-400 text-lg">🔍</button>
-        </div>
 
         {/* Social icons */}
         <div className="flex gap-5 text-lg">
           <a href="#" className="hover:text-cyan-400 transition-colors"><FaFacebookF /></a>
-          <a href="#" className="hover:text-cyan-400 transition-colors"><FaTwitter /></a>
-          <a href="#" className="hover:text-cyan-400 transition-colors"><FaPaperPlane /></a>
           <a href="#" className="hover:text-cyan-400 transition-colors"><FaInstagram /></a>
         </div>
       </div>
@@ -48,11 +34,10 @@ const FooterComp = () => {
 
       {/* --- Bottom Section --- */}
       <div className="max-w-6xl mx-auto flex flex-wrap justify-center gap-6 text-xs sm:text-sm text-gray-400">
-        <Link to="/privacy-policy" className="hover:text-cyan-400 transition-colors">Privacy Policy</Link>
-        <Link to="/terms-of-service" className="hover:text-cyan-400 transition-colors">Terms of Service</Link>
-        <Link to="/data-deletion-request" className="hover:text-cyan-400 transition-colors">Delete My Data</Link>
-        <a href="#contact" className="hover:text-cyan-400 transition-colors">Contact Us</a>
-        <a href="#support" className="hover:text-cyan-400 transition-colors">Support</a>
+        <Link to="/privacy-policy" className="hover:text-cyan-400 transition-colors">Política de Privacidad</Link>
+        <Link to="/terms-of-service" className="hover:text-cyan-400 transition-colors">Terminos de servicio</Link>
+        <Link to="/data-deletion-request" className="hover:text-cyan-400 transition-colors">Borrar mi datos</Link>
+        <a href="#contact" className="hover:text-cyan-400 transition-colors">Contacto y soporte</a>
       </div>
     </footer>
   );

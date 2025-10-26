@@ -56,7 +56,7 @@ function App() {
           </Routes>
         </main>
         <FooterComp />
-        <CookieConsent />
+      {/*  <CookieConsent />*/}
       </Router>
     </div>
   );

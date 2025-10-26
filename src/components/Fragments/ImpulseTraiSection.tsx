@@ -2,8 +2,8 @@ import React from "react";
 
 const plans = [
   {
-    name: "Unlimited plan",
-    price: "29,90 € + IVA",
+    name: "Pro - Mensual",
+    price: "2,99 € + IVA",
     description:
       "La solución perfecta para atletas que buscan progresar sin límites. Entrena, mide y evoluciona con acceso total.",
     tag: "Recomendado",
@@ -11,16 +11,8 @@ const plans = [
     highlighted: true,
   },
   {
-    name: "Independent plan",
-    price: "19,90 € + IVA",
-    description:
-      "Ideal para quienes entrenan de forma individual. Registra tu progreso y accede a estadísticas básicas.",
-    note: "1 mes gratis sin permanencia",
-    highlighted: false,
-  },
-  {
-    name: "Unlimited plan (Anual)",
-    price: "299 € + IVA / año",
+    name: "Pro - Anual",
+    price: "29,99 € + IVA / año",
     description:
       "Ahorra con el pago anual y obtén todos los beneficios del plan Unlimited por adelantado.",
     note: "Pago inmediato • Tarjeta • Google Pay • Apple Pay",
@@ -44,7 +36,7 @@ function ImpulseTraiSection() {
         </p>
 
         {/* Cards */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           {plans.map((plan, idx) => (
             <div
               key={idx}
@@ -85,7 +77,7 @@ function ImpulseTraiSection() {
                     : "bg-transparent border border-gray-600 hover:border-cyan-400 hover:text-cyan-300"
                 }`}
               >
-                Elegir plan →
+               Adquiérela en la App Store →
               </button>
             </div>
           ))}
