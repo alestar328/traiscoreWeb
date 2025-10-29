@@ -314,7 +314,7 @@ const ProgressDashboard: React.FC = () => {
         }
 
         // Si measurement ya es BodyMeasurementType (no entra en el typeof string)
-        return MEASUREMENT_INFO[measurement].displayName;
+        return MEASUREMENT_INFO[measurement as BodyMeasurementType].displayName;
     };
 
 
@@ -326,7 +326,7 @@ const ProgressDashboard: React.FC = () => {
             }
             return 'cm'; // fallback
         }
-        return MEASUREMENT_INFO[measurement].unit;
+        return MEASUREMENT_INFO[measurement as BodyMeasurementType].unit;
     };
 
     // ✅ NUEVA FUNCIÓN: Cargar ejercicios del usuario

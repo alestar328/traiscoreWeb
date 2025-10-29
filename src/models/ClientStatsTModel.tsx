@@ -108,7 +108,7 @@ export class ClientStatsTModel {
             }
             return measurement;
         }
-        return MEASUREMENT_INFO[measurement].displayName;
+        return MEASUREMENT_INFO[measurement as BodyMeasurementType].displayName;
     }
 
     /**
@@ -122,7 +122,7 @@ export class ClientStatsTModel {
             }
             return 'cm';
         }
-        return MEASUREMENT_INFO[measurement].unit;
+        return MEASUREMENT_INFO[measurement as BodyMeasurementType].unit;
     }
 
     /**
