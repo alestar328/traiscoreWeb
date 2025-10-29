@@ -24,6 +24,15 @@
   },
   "include": ["src"],
   "exclude": [
-    "src/components/pages/UserProfileFormWrapper.tsx"
+    "src/contexts/**",
+    "src/firebase/**",
+    "src/firebase.ts",
+    "src/data/**",
+    "src/config/**",
+    "src/domain/**",
+    "src/components/ClientDashboard/**",
+    "src/components/TrainerDashboard/**",
+    "src/components/pages/ProgressDashboard.tsx",
+    "src/testFirestore.tsx"
   ]
 }

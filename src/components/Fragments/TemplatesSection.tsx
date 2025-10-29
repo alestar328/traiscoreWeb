@@ -1,4 +1,3 @@
-import React from "react";
 import templatesImage from '../../assets/templates.png';
 
 function TemplatesSection() {

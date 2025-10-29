@@ -1,5 +1,7 @@
 import {BodyStats, UserEntity} from "../../models/UserEntity.tsx";
 import "../../styles/ClientProfileBoard.css";
+import * as React from "react";
+
 import {
     FaUser,
     FaArrowUp,
@@ -12,7 +14,7 @@ import {
     FaArrowLeft, FaHistory
 } from "react-icons/fa";
 import {useAuth} from "../../contexts/AuthContext.tsx";
-import {JSX, useEffect, useState} from "react";
+import {JSX, useEffect, useState, type FC} from "react";
 import {doc, getDoc, collection, getDocs, query, orderBy,  Timestamp} from "firebase/firestore";
 import {db} from "../../firebase/firebaseConfig.tsx";
 
@@ -21,7 +23,7 @@ interface LoadingState {
     error: string | null;
 }
 
-const ClientProfileBoard: React.FC = () => {
+const ClientProfileBoard: FC = () => {
     const { currentUser, state: authState } = useAuth();
     const [client, setClient] = useState<UserEntity | null>(null);
     const [bodyStats, setBodyStats] = useState<BodyStats | null>(null);

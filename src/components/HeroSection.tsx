@@ -1,4 +1,3 @@
-import {Button} from "./Button.tsx";
 import '../styles/HeroSection.css';
 import MobileSVG from '../assets/mobilemain.svg';
 import '../App.css';

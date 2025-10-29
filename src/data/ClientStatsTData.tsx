@@ -1,4 +1,4 @@
-import { doc, getDoc, collection, getDocs, query, orderBy } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { UserEntity } from "../models/UserEntity.tsx";
 import { db } from "../firebase/firebaseConfig.tsx";
 

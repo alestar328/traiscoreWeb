@@ -1,4 +1,5 @@
 import { UserRole} from "../../models/UserEntity.tsx";
+import type { FC } from 'react';
 
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
 }
 
 
-export const UserProfileForm: React.FC<Props> = ({onGoBack, formData,
+export const UserProfileForm: FC<Props> = ({onGoBack, formData,
                                                      isValid, formTouched,
                                                      onChange, onRoleSelect,
                                                      onSubmit

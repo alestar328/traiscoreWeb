@@ -1,4 +1,5 @@
 import {RegClientFormData} from "../../models/UtilsInterfaces.tsx";
+import type { FC } from 'react';
 
 
 interface PropsRegClient {
@@ -10,7 +11,7 @@ interface PropsRegClient {
     onGoBack?: () => void;
 }
 
-export const RegClientForm: React.FC<PropsRegClient> = ({formData,onGoBack,isValid,formTouched,onChange,onSubmit}) => (
+export const RegClientForm: FC<PropsRegClient> = ({formData,onGoBack,isValid,formTouched,onChange,onSubmit}) => (
     <>
         <h2>Datos adicionales (Cliente)</h2>
         {onGoBack && (

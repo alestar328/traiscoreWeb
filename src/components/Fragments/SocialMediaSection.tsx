@@ -1,4 +1,3 @@
-import React from "react";
 import SocialMediaSVG from "../../assets/socialMedia.svg";
 
 function SocialMediaSection() {

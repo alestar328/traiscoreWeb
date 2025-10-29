@@ -1,4 +1,3 @@
-import React from "react";
 import { FaChartLine, FaRuler, FaCloud } from "react-icons/fa";
 
 const benefits = [

@@ -18,11 +18,12 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
     const [step, setStep] = useState<Step>("base");
 
     const [formData, setFormData] = useState({
-        userName:    pendingUser?.userName || '',
-        userLastName: pendingUser?.userLastName || '',
-        email:       pendingUser?.email || '',
-        birthDate:   pendingUser?.birthDate?.toISOString().split('T')[0] ?? '',
-        userRole:    pendingUser?.userRole || 'CLIENT' as UserRole,
+        userName:     pendingUser?.firstName || '',
+        userLastName: pendingUser?.lastName || '',
+        email:        pendingUser?.email || '',
+        // Guardamos como string yyyy-mm-dd para el input date, si no, cadena vacía
+        birthDate:    '',
+        userRole:     (pendingUser?.userRole || 'CLIENT') as UserRole,
     });
     const [loading, setLoading] = useState(true);
     const [baseTouched, setBaseTouched] = useState(false);
@@ -46,13 +47,14 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
             return;
         }
         setFormData({
-            userName:     pendingUser.userName    ?? "",
-            userLastName: pendingUser.userLastName?? "",
-            email:        pendingUser.email       ?? "",
-            birthDate:    pendingUser.birthDate
-                ? pendingUser.birthDate.toISOString().split("T")[0]
+            userName:     pendingUser.firstName    ?? "",
+            userLastName: pendingUser.lastName     ?? "",
+            email:        pendingUser.email        ?? "",
+            // pendingUser tiene birthYear:number en el modelo; no hay fecha exacta
+            birthDate:    pendingUser.birthYear
+                ? `${pendingUser.birthYear}-01-01`
                 : "",
-            userRole:     pendingUser.userRole    ?? "CLIENT",
+            userRole:     (pendingUser.userRole    ?? "CLIENT") as UserRole,
         });
         setLoading(false);
     }, [pendingUser, navigate]);
@@ -123,10 +125,10 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
             ...pendingUser,
             uid: pendingUser.uid,
             email: formData.email,
-            userName: formData.userName,
-            userLastName: formData.userLastName,
-            userRole: formData.userRole,
-            birthDate: new Date(formData.birthDate),
+            firstName: formData.userName,
+            lastName:  formData.userLastName,
+            userRole:  formData.userRole,
+            birthYear: formData.birthDate ? Number(formData.birthDate.substring(0,4)) : undefined,
         };
         await setDoc(doc(db, "users", profile.uid), profile);
         navigate("/trainerdashboard");
@@ -139,11 +141,11 @@ export default function UserProfileFormWrapper( { onGoBack }: { onGoBack: () => 
             ...pendingUser,
             uid: pendingUser.uid,
             email: formData.email,
-            userName: formData.userName,
-            userLastName: formData.userLastName,
-            birthDate: new Date(formData.birthDate),
-            userRole: "CLIENT" as UserRole,
-            gender:   clientData.gender,
+            firstName: formData.userName,
+            lastName:  formData.userLastName,
+            birthYear: formData.birthDate ? Number(formData.birthDate.substring(0,4)) : undefined,
+            userRole:  "CLIENT" as UserRole,
+            gender:   clientData.gender ? clientData.gender.toUpperCase() as UserEntity['gender'] : undefined,
             measurements: clientData.measurements,
             phone:    clientData.phone,
             address:  clientData.address,
