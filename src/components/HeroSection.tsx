@@ -1,6 +1,8 @@
 import '../styles/HeroSection.css';
 import MobileSVG from '../assets/mobilemain.svg';
 import '../App.css';
+import GoogleStorePng from '../assets/googleStoreEs.png';
+import AppleStoreSvg from '../assets/appleStoreEs.svg';
 
 function HeroSection() {
     return(
@@ -13,16 +15,16 @@ function HeroSection() {
                 <div className="lg:col-span-3 text-white p-2 lg:p-4 my-8 lg:my-20 flex flex-col justify-center text-center lg:text-left">
                     <h1 className='text-4xl sm:text-6xl lg:text-8xl font-bold leading-tight'>TraiScore</h1>
                     <p className='text-xl sm:text-3xl lg:text-5xl mt-4 lg:mt-6 leading-relaxed'>Registra tu entrenamiento y ofrece rutinas desde la palma de tu mano</p>
-                    <div className='hero-btns flex flex-col sm:flex-row gap-4 mt-6 lg:mt-8 justify-center lg:justify-start'>
-                            <img 
-                                src="/src/assets/googleStoreEs.png" 
-                                alt="Descargar en Google Play Store" 
-                                className="cursor-pointer hover:scale-105 transition-transform duration-300 w-40 sm:w-48 h-12 sm:h-16 object-contain"
+                    <div className="hero-btns flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 lg:mt-8 justify-center lg:justify-start items-center">
+                    <img
+                                src={GoogleStorePng}
+                                alt="Descargar en Google Play Store"
+                                className="cursor-pointer hover:scale-105 transition-transform duration-300 w-40 h-auto sm:w-44 md:w-48 max-w-full object-contain"
                             />
-                            <img 
-                                src="/src/assets/appleStoreEs.svg" 
-                                alt="Descargar en Apple App Store" 
-                                className="cursor-pointer hover:scale-105 transition-transform duration-300 w-40 sm:w-48 h-12 sm:h-16 object-contain"
+                            <img
+                                src={AppleStoreSvg}
+                                alt="Descargar en Apple App Store"
+                                className="cursor-pointer hover:scale-105 transition-transform duration-300 w-40 h-auto sm:w-44 md:w-48 max-w-full object-contain"
                             />
                         </div>
                 </div>
